@@ -1,0 +1,882 @@
+{
+ "n_odors": 67,
+ "gloms": 47,
+ "draws": 20,
+ "seed": 23,
+ "similarity_preservation": {
+  "real": {
+   "mean": 0.8408678351132869,
+   "std": 0.0
+  },
+  "binary_real": {
+   "mean": 0.8860133076600999,
+   "std": 0.0
+  },
+  "degree_swap": {
+   "mean": 0.8396226029224663,
+   "std": 0.0124062239487791,
+   "min": 0.8162670483182591,
+   "max": 0.8627797070401622,
+   "draws": [
+    0.8213180358277657,
+    0.858442277874158,
+    0.8499597234319011,
+    0.8627797070401622,
+    0.8162670483182591,
+    0.8397281606159036,
+    0.8439778878393699,
+    0.8251653926140762,
+    0.8303284239793061,
+    0.8472324665809957,
+    0.836581924204867,
+    0.8279656718738304,
+    0.8424267711706173,
+    0.8385437569509764,
+    0.8429727650018601,
+    0.8400893868359223,
+    0.8210927901407002,
+    0.8477977973838211,
+    0.8544468556415524,
+    0.8453352151232816
+   ]
+  },
+  "pn_degree_kept": {
+   "mean": 0.8379263267377981,
+   "std": 0.011876237152785647,
+   "min": 0.8118871204478167,
+   "max": 0.8570924413491179,
+   "draws": [
+    0.8118871204478167,
+    0.8281055748687804,
+    0.8345161045820074,
+    0.8565635773412971,
+    0.8317434135640203,
+    0.8570924413491179,
+    0.8516685990130386,
+    0.8310184386689426,
+    0.833565734118073,
+    0.8484146853024729,
+    0.8440565158272231,
+    0.8386169014857293,
+    0.8526727459535497,
+    0.8448419419346616,
+    0.8454418421400341,
+    0.8217961043413085,
+    0.8381289563172406,
+    0.8220990587412389,
+    0.8329591203186741,
+    0.8333376584407359
+   ]
+  },
+  "kc_degree_kept": {
+   "mean": 0.924002432703603,
+   "std": 0.010016128521778295,
+   "min": 0.8954260285007888,
+   "max": 0.9407512936935816,
+   "draws": [
+    0.9331910940328273,
+    0.9214019307727981,
+    0.9407512936935816,
+    0.9217130820413736,
+    0.9204359503978313,
+    0.9212277148396997,
+    0.9335229745082937,
+    0.9318512529579311,
+    0.9308924336018944,
+    0.9267815946181381,
+    0.9220566721705853,
+    0.8954260285007888,
+    0.9128221463470018,
+    0.9319759146400327,
+    0.921519666805894,
+    0.9102499838432981,
+    0.9269603081152187,
+    0.9321797838529149,
+    0.9302093290179665,
+    0.9148794993139913
+   ]
+  },
+  "uniform": {
+   "mean": 0.9245352962792757,
+   "std": 0.010191429315968049,
+   "min": 0.8922114471030353,
+   "max": 0.9377160819420853,
+   "draws": [
+    0.935671386769952,
+    0.9328696308969925,
+    0.9281561127884241,
+    0.9311012500241338,
+    0.9377160819420853,
+    0.9248083408795116,
+    0.9230787871623161,
+    0.925649032289323,
+    0.9292289810854844,
+    0.9259479554241784,
+    0.9209380133208499,
+    0.9224399043683116,
+    0.9337961224159423,
+    0.9218568486558397,
+    0.8922114471030353,
+    0.9317095724759565,
+    0.9147910390806115,
+    0.9284227302909025,
+    0.906975530776111,
+    0.9233371578355521
+   ]
+  },
+  "real_percentile_in_degree_swap": 0.5
+ },
+ "generalisation": {
+  "compartment": "MBON11 γ1pedc>α/β",
+  "real": {
+   "track_similarity": 0.8190501346145599,
+   "class_enrichment": 3.885714285714286,
+   "class_enrichment_p": 0.0004997501249375312
+  },
+  "degree_swap": {
+   "track_similarity": 0.808732903585296,
+   "class_enrichment": 3.8800000000000003,
+   "same_kc_as_real": 0.08097014925373136,
+   "avoidance_corr_with_real": 0.9343761463590405
+  },
+  "uniform": {
+   "track_similarity": 0.8931253598984815,
+   "class_enrichment": 3.4
+  },
+  "chance_same_kc": 0.050078247261345854
+ },
+ "saturation": {
+  "k": [
+   5,
+   10,
+   15,
+   20,
+   30,
+   45
+  ],
+  "orders": 500,
+  "by_compartment": {
+   "MBON11 γ1pedc>α/β": {
+    "kc_inputs": 1713,
+    "valence": "punish",
+    "recognised": {
+     "5": {
+      "mean": 1.0,
+      "std": 0.0
+     },
+     "10": {
+      "mean": 0.9648000000000001,
+      "std": 0.0707174660179506
+     },
+     "15": {
+      "mean": 0.8677333333333334,
+      "std": 0.10732596247983162
+     },
+     "20": {
+      "mean": 0.7526999999999999,
+      "std": 0.13984888272703505
+     },
+     "30": {
+      "mean": 0.5688000000000001,
+      "std": 0.18378702650380713
+     },
+     "45": {
+      "mean": 0.4332888888888889,
+      "std": 0.20591979260783633
+     }
+    }
+   },
+   "MBON12 γ2α'1": {
+    "kc_inputs": 979,
+    "valence": "punish",
+    "recognised": {
+     "5": {
+      "mean": 0.9992000000000001,
+      "std": 0.0126237870704476
+     },
+     "10": {
+      "mean": 0.908,
+      "std": 0.11356055653262713
+     },
+     "15": {
+      "mean": 0.7793333333333332,
+      "std": 0.14999111084772104
+     },
+     "20": {
+      "mean": 0.6113,
+      "std": 0.18557292367153136
+     },
+     "30": {
+      "mean": 0.401,
+      "std": 0.1979817612250628
+     },
+     "45": {
+      "mean": 0.3061333333333333,
+      "std": 0.21377942249309562
+     }
+    }
+   },
+   "MBON19 α2p3p": {
+    "kc_inputs": 161,
+    "valence": "punish",
+    "recognised": {
+     "5": {
+      "mean": 0.35240000000000005,
+      "std": 0.3010219925520393
+     },
+     "10": {
+      "mean": 0.18660000000000002,
+      "std": 0.17933332094175916
+     },
+     "15": {
+      "mean": 0.16453333333333334,
+      "std": 0.13585901188773275
+     },
+     "20": {
+      "mean": 0.1383,
+      "std": 0.12181178103943806
+     },
+     "30": {
+      "mean": 0.12340000000000001,
+      "std": 0.10091358239162412
+     },
+     "45": {
+      "mean": 0.15595555555555554,
+      "std": 0.11345456696595382
+     }
+    }
+   },
+   "MBON02 β2β'2a": {
+    "kc_inputs": 1077,
+    "valence": "reward",
+    "recognised": {
+     "5": {
+      "mean": 0.9944,
+      "std": 0.03299454500368204
+     },
+     "10": {
+      "mean": 0.906,
+      "std": 0.0973858305915188
+     },
+     "15": {
+      "mean": 0.8098666666666666,
+      "std": 0.1529283928292367
+     },
+     "20": {
+      "mean": 0.6622,
+      "std": 0.19504143149597727
+     },
+     "30": {
+      "mean": 0.4584,
+      "std": 0.1958755160242795
+     },
+     "45": {
+      "mean": 0.40515555555555555,
+      "std": 0.1826960992778938
+     }
+    }
+   },
+   "MBON01 γ5β'2a": {
+    "kc_inputs": 938,
+    "valence": "reward",
+    "recognised": {
+     "5": {
+      "mean": 0.9996,
+      "std": 0.008935323161475469
+     },
+     "10": {
+      "mean": 0.9076000000000002,
+      "std": 0.10612370140548245
+     },
+     "15": {
+      "mean": 0.7986666666666667,
+      "std": 0.13272528018429647
+     },
+     "20": {
+      "mean": 0.6480999999999999,
+      "std": 0.1896612506549506
+     },
+     "30": {
+      "mean": 0.4056,
+      "std": 0.19570889947402323
+     },
+     "45": {
+      "mean": 0.304,
+      "std": 0.1860380951297507
+     }
+    }
+   },
+   "MBON07 α1": {
+    "kc_inputs": 914,
+    "valence": "reward",
+    "recognised": {
+     "5": {
+      "mean": 0.9584000000000001,
+      "std": 0.08596185200424662
+     },
+     "10": {
+      "mean": 0.8396000000000001,
+      "std": 0.10840590389826563
+     },
+     "15": {
+      "mean": 0.7550666666666666,
+      "std": 0.14852944339610097
+     },
+     "20": {
+      "mean": 0.607,
+      "std": 0.18729922583929703
+     },
+     "30": {
+      "mean": 0.4386,
+      "std": 0.1692238359885116
+     },
+     "45": {
+      "mean": 0.39653333333333335,
+      "std": 0.18770565873459344
+     }
+    }
+   }
+  }
+ },
+ "example": {
+  "punished": "ethyl acetate",
+  "ranking": [
+   {
+    "name": "ethyl acetate",
+    "cls": "ester",
+    "drop": 0.85,
+    "readable": 92,
+    "shared": 92,
+    "synapse_share": 1.0
+   },
+   {
+    "name": "methyl acetate",
+    "cls": "ester",
+    "drop": 0.6383173076923078,
+    "readable": 88,
+    "shared": 62,
+    "synapse_share": 0.7509615384615385
+   },
+   {
+    "name": "ethyl propionate",
+    "cls": "ester",
+    "drop": 0.3669064748201439,
+    "readable": 93,
+    "shared": 47,
+    "synapse_share": 0.4316546762589928
+   },
+   {
+    "name": "acetone",
+    "cls": "ketone",
+    "drop": 0.3341161928306551,
+    "readable": 95,
+    "shared": 36,
+    "synapse_share": 0.3930778739184178
+   },
+   {
+    "name": "2-butanone",
+    "cls": "ketone",
+    "drop": 0.3294258373205742,
+    "readable": 94,
+    "shared": 33,
+    "synapse_share": 0.3875598086124402
+   },
+   {
+    "name": "ethyl butyrate",
+    "cls": "ester",
+    "drop": 0.31739422431161857,
+    "readable": 93,
+    "shared": 36,
+    "synapse_share": 0.37340496977837473
+   },
+   {
+    "name": "propyl acetate",
+    "cls": "ester",
+    "drop": 0.31638187221396735,
+    "readable": 94,
+    "shared": 37,
+    "synapse_share": 0.3722139673105498
+   },
+   {
+    "name": "propanal",
+    "cls": "aldehyde",
+    "drop": 0.19639949906073895,
+    "readable": 95,
+    "shared": 19,
+    "synapse_share": 0.23105823418910457
+   },
+   {
+    "name": "acetaldehyde",
+    "cls": "aldehyde",
+    "drop": 0.15288675055514447,
+    "readable": 93,
+    "shared": 20,
+    "synapse_share": 0.17986676535899335
+   },
+   {
+    "name": "2-heptanone",
+    "cls": "ketone",
+    "drop": 0.14620403321470937,
+    "readable": 95,
+    "shared": 15,
+    "synapse_share": 0.17200474495848161
+   },
+   {
+    "name": "2,3-butanedione",
+    "cls": "ketone",
+    "drop": 0.14359673024523173,
+    "readable": 96,
+    "shared": 18,
+    "synapse_share": 0.16893732970027248
+   },
+   {
+    "name": "1-hexanol",
+    "cls": "alcohol",
+    "drop": 0.1349045346062052,
+    "readable": 93,
+    "shared": 13,
+    "synapse_share": 0.15871121718377088
+   },
+   {
+    "name": "E2-hexenal",
+    "cls": "aldehyde",
+    "drop": 0.12362703681351835,
+    "readable": 96,
+    "shared": 10,
+    "synapse_share": 0.14544357272178637
+   },
+   {
+    "name": "isopentyl acetate",
+    "cls": "ester",
+    "drop": 0.11838015540944422,
+    "readable": 96,
+    "shared": 14,
+    "synapse_share": 0.13927077106993424
+   },
+   {
+    "name": "cyclohexanone",
+    "cls": "ketone",
+    "drop": 0.11386292834890965,
+    "readable": 93,
+    "shared": 9,
+    "synapse_share": 0.13395638629283488
+   },
+   {
+    "name": "carbon dioxide",
+    "cls": "other",
+    "drop": 0.1133791430881164,
+    "readable": 86,
+    "shared": 10,
+    "synapse_share": 0.1333872271624899
+   },
+   {
+    "name": "6-methyl-5-hepten-2-one",
+    "cls": "ketone",
+    "drop": 0.10728628800917958,
+    "readable": 93,
+    "shared": 12,
+    "synapse_share": 0.12621916236374067
+   },
+   {
+    "name": "putrescine",
+    "cls": "amine",
+    "drop": 0.10677083333333333,
+    "readable": 91,
+    "shared": 12,
+    "synapse_share": 0.1256127450980392
+   },
+   {
+    "name": "butyl acetate",
+    "cls": "ester",
+    "drop": 0.10557324840764332,
+    "readable": 94,
+    "shared": 12,
+    "synapse_share": 0.12420382165605096
+   },
+   {
+    "name": "pentyl acetate",
+    "cls": "ester",
+    "drop": 0.10492518703241892,
+    "readable": 96,
+    "shared": 13,
+    "synapse_share": 0.12344139650872818
+   },
+   {
+    "name": "nonanoic acid",
+    "cls": "acid",
+    "drop": 0.09252037252619327,
+    "readable": 95,
+    "shared": 10,
+    "synapse_share": 0.10884749708963912
+   },
+   {
+    "name": "1-butanol",
+    "cls": "alcohol",
+    "drop": 0.0913364674278039,
+    "readable": 94,
+    "shared": 9,
+    "synapse_share": 0.10745466756212223
+   },
+   {
+    "name": "ammonium hydroxide",
+    "cls": "amine",
+    "drop": 0.08841342988808423,
+    "readable": 92,
+    "shared": 10,
+    "synapse_share": 0.10401579986833442
+   },
+   {
+    "name": "hexanoic acid",
+    "cls": "acid",
+    "drop": 0.08696911196911203,
+    "readable": 93,
+    "shared": 11,
+    "synapse_share": 0.10231660231660232
+   },
+   {
+    "name": "benzyl alcohol",
+    "cls": "arom",
+    "drop": 0.08090234857849188,
+    "readable": 91,
+    "shared": 7,
+    "synapse_share": 0.09517923362175525
+   },
+   {
+    "name": "2,3-butanediol",
+    "cls": "alcohol",
+    "drop": 0.07823228634039438,
+    "readable": 93,
+    "shared": 11,
+    "synapse_share": 0.09203798392987582
+   },
+   {
+    "name": "benzaldehyde",
+    "cls": "arom",
+    "drop": 0.07786259541984725,
+    "readable": 92,
+    "shared": 7,
+    "synapse_share": 0.0916030534351145
+   },
+   {
+    "name": "oil",
+    "cls": "other",
+    "drop": 0.07768817204301075,
+    "readable": 95,
+    "shared": 8,
+    "synapse_share": 0.0913978494623656
+   },
+   {
+    "name": "phenethyl alcohol",
+    "cls": "arom",
+    "drop": 0.07613563659628919,
+    "readable": 92,
+    "shared": 7,
+    "synapse_share": 0.08957133717210493
+   },
+   {
+    "name": "water",
+    "cls": "other",
+    "drop": 0.07548951048951036,
+    "readable": 93,
+    "shared": 11,
+    "synapse_share": 0.08881118881118881
+   },
+   {
+    "name": "1-octen-3-ol",
+    "cls": "alcohol",
+    "drop": 0.07403528114663724,
+    "readable": 94,
+    "shared": 7,
+    "synapse_share": 0.08710033076074973
+   },
+   {
+    "name": "geranyl acetate",
+    "cls": "terpene",
+    "drop": 0.07099109131403118,
+    "readable": 92,
+    "shared": 7,
+    "synapse_share": 0.08351893095768374
+   },
+   {
+    "name": "3-methyl-butanol",
+    "cls": "alcohol",
+    "drop": 0.07019846350832272,
+    "readable": 93,
+    "shared": 6,
+    "synapse_share": 0.08258642765685019
+   },
+   {
+    "name": "3-octanol",
+    "cls": "alcohol",
+    "drop": 0.06980198019801975,
+    "readable": 96,
+    "shared": 7,
+    "synapse_share": 0.08211997670355271
+   },
+   {
+    "name": "3-methylthio-1-propanol",
+    "cls": "sulfid",
+    "drop": 0.06921613394216138,
+    "readable": 94,
+    "shared": 8,
+    "synapse_share": 0.08143074581430745
+   },
+   {
+    "name": "octanoic acid",
+    "cls": "acid",
+    "drop": 0.06725163593099356,
+    "readable": 95,
+    "shared": 7,
+    "synapse_share": 0.07911957168352171
+   },
+   {
+    "name": "Z3-hexenol",
+    "cls": "alcohol",
+    "drop": 0.06298256537982572,
+    "readable": 92,
+    "shared": 6,
+    "synapse_share": 0.07409713574097136
+   },
+   {
+    "name": "acetophenone",
+    "cls": "arom",
+    "drop": 0.06236128236744765,
+    "readable": 93,
+    "shared": 6,
+    "synapse_share": 0.07336621454993834
+   },
+   {
+    "name": "phenylacetaldehyde",
+    "cls": "arom",
+    "drop": 0.056901658767772485,
+    "readable": 94,
+    "shared": 6,
+    "synapse_share": 0.0669431279620853
+   },
+   {
+    "name": "hexanal",
+    "cls": "aldehyde",
+    "drop": 0.05561257216164211,
+    "readable": 93,
+    "shared": 4,
+    "synapse_share": 0.0654265554842848
+   },
+   {
+    "name": "hexyl acetate",
+    "cls": "ester",
+    "drop": 0.05546016483516483,
+    "readable": 95,
+    "shared": 7,
+    "synapse_share": 0.06524725274725275
+   },
+   {
+    "name": "propanoic acid",
+    "cls": "acid",
+    "drop": 0.05490084985835699,
+    "readable": 93,
+    "shared": 5,
+    "synapse_share": 0.06458923512747876
+   },
+   {
+    "name": "heptanoic acid",
+    "cls": "acid",
+    "drop": 0.053343108504398856,
+    "readable": 96,
+    "shared": 6,
+    "synapse_share": 0.06275659824046921
+   },
+   {
+    "name": "butyric acid",
+    "cls": "acid",
+    "drop": 0.05129310344827583,
+    "readable": 94,
+    "shared": 5,
+    "synapse_share": 0.0603448275862069
+   },
+   {
+    "name": "cadaverine",
+    "cls": "amine",
+    "drop": 0.04903846153846162,
+    "readable": 92,
+    "shared": 5,
+    "synapse_share": 0.057692307692307696
+   },
+   {
+    "name": "E2-hexenol",
+    "cls": "alcohol",
+    "drop": 0.048365617433414096,
+    "readable": 93,
+    "shared": 4,
+    "synapse_share": 0.05690072639225181
+   },
+   {
+    "name": "pentanal",
+    "cls": "aldehyde",
+    "drop": 0.04805276381909548,
+    "readable": 94,
+    "shared": 5,
+    "synapse_share": 0.056532663316582916
+   },
+   {
+    "name": "4-allyl-1,2-dimethoxybenzene",
+    "cls": "arom",
+    "drop": 0.04233716475095797,
+    "readable": 90,
+    "shared": 5,
+    "synapse_share": 0.04980842911877394
+   },
+   {
+    "name": "E2-hexenyl acetate",
+    "cls": "ester",
+    "drop": 0.041500904159131956,
+    "readable": 96,
+    "shared": 5,
+    "synapse_share": 0.048824593128390596
+   },
+   {
+    "name": "pentanoic acid",
+    "cls": "acid",
+    "drop": 0.03976918278228322,
+    "readable": 94,
+    "shared": 4,
+    "synapse_share": 0.046787273861509666
+   },
+   {
+    "name": "geraniol",
+    "cls": "terpene",
+    "drop": 0.035646780862374564,
+    "readable": 94,
+    "shared": 3,
+    "synapse_share": 0.04193738924985233
+   },
+   {
+    "name": "eugenol",
+    "cls": "arom",
+    "drop": 0.034798314268513056,
+    "readable": 93,
+    "shared": 4,
+    "synapse_share": 0.040939193257074055
+   },
+   {
+    "name": "2-methylphenol",
+    "cls": "arom",
+    "drop": 0.03165735567970205,
+    "readable": 87,
+    "shared": 5,
+    "synapse_share": 0.037243947858473
+   },
+   {
+    "name": "acetic acid",
+    "cls": "acid",
+    "drop": 0.0310907903331157,
+    "readable": 91,
+    "shared": 3,
+    "synapse_share": 0.036577400391900716
+   },
+   {
+    "name": "isobutyric acid",
+    "cls": "acid",
+    "drop": 0.029188869153345284,
+    "readable": 95,
+    "shared": 3,
+    "synapse_share": 0.03433984606275903
+   },
+   {
+    "name": "4-methylphenol",
+    "cls": "arom",
+    "drop": 0.029173938336242055,
+    "readable": 93,
+    "shared": 3,
+    "synapse_share": 0.03432228039557882
+   },
+   {
+    "name": "butanal",
+    "cls": "aldehyde",
+    "drop": 0.028822129684711508,
+    "readable": 95,
+    "shared": 4,
+    "synapse_share": 0.03390838786436645
+   },
+   {
+    "name": "(-)-trans-caryophyllene",
+    "cls": "terpene",
+    "drop": 0.02091836734693872,
+    "readable": 96,
+    "shared": 2,
+    "synapse_share": 0.02460984393757503
+   },
+   {
+    "name": "furfural",
+    "cls": "O ring",
+    "drop": 0.020180893159977415,
+    "readable": 95,
+    "shared": 2,
+    "synapse_share": 0.023742227247032222
+   },
+   {
+    "name": "hexyl butyrate",
+    "cls": "ester",
+    "drop": 0.017894736842105293,
+    "readable": 95,
+    "shared": 1,
+    "synapse_share": 0.021052631578947368
+   },
+   {
+    "name": "beta-citronellol",
+    "cls": "terpene",
+    "drop": 0.016769420468557363,
+    "readable": 94,
+    "shared": 1,
+    "synapse_share": 0.01972872996300863
+   },
+   {
+    "name": "alpha-terpineol",
+    "cls": "terpene",
+    "drop": 0.01643504531722057,
+    "readable": 94,
+    "shared": 1,
+    "synapse_share": 0.01933534743202417
+   },
+   {
+    "name": "isopentanoic acid",
+    "cls": "acid",
+    "drop": 0.015795586527293872,
+    "readable": 94,
+    "shared": 1,
+    "synapse_share": 0.018583042973286876
+   },
+   {
+    "name": "linalool",
+    "cls": "terpene",
+    "drop": 0.015533980582524297,
+    "readable": 93,
+    "shared": 1,
+    "synapse_share": 0.018275271273557967
+   },
+   {
+    "name": "pyrrolidine",
+    "cls": "N ring",
+    "drop": 0.011217756448710285,
+    "readable": 90,
+    "shared": 1,
+    "synapse_share": 0.013197360527894421
+   },
+   {
+    "name": "methyl salicylate",
+    "cls": "arom",
+    "drop": 0.008009422850412196,
+    "readable": 96,
+    "shared": 2,
+    "synapse_share": 0.009422850412249705
+   },
+   {
+    "name": "ethyl benzoate",
+    "cls": "arom",
+    "drop": 0.0030797101449274813,
+    "readable": 95,
+    "shared": 1,
+    "synapse_share": 0.0036231884057971015
+   }
+  ]
+ }
+}

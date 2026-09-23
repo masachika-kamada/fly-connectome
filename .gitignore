@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.DS_Store
+
+# Generated pages, and the site assembled from them for GitHub Pages
+dist/
+site/
+
+# Raw DoOR dumps: large, and fetched from upstream. See docs/DATA.md.
+data/door_response_matrix.csv
+data/odor.csv
+data/door_mappings.csv
+
+# Extra rewirings for experiment 5: large, and rebuilt by scripts/build_errand.py.
+data/errand_controls.json

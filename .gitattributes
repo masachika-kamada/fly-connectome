@@ -1,0 +1,4 @@
+# Normalise line endings so regenerating on another OS does not show as a diff.
+* text=auto eol=lf
+*.png binary
+*.npz binary

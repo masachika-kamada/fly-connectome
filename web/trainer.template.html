@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>脳の中を見る</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F1F3F0;--paper:#FAFBF9;--sunk:#E9ECE8;--ink:#191D1F;--ink-2:#4B5257;--ink-3:#7C858B;
+  --rule:#D7DBD6;--rule-2:#C3C9C2;--hot:#C04326;--cool:#26775A;--accent:#B0436B;
+  --f-disp:"Zen Old Mincho",ui-serif,Georgia,serif;
+  --f-body:"Zen Kaku Gothic New",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#121517;--paper:#181C1F;--sunk:#22272A;--ink:#E8EBE8;--ink-2:#AEB6BB;--ink-3:#7F888E;
+  --rule:#2A3034;--rule-2:#3A4145;--hot:#E9765A;--cool:#4FB58C;--accent:#DE7CA0;}}
+:root[data-theme="dark"]{
+  --ground:#121517;--paper:#181C1F;--sunk:#22272A;--ink:#E8EBE8;--ink-2:#AEB6BB;--ink-3:#7F888E;
+  --rule:#2A3034;--rule-2:#3A4145;--hot:#E9765A;--cool:#4FB58C;--accent:#DE7CA0;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-body);line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:36px 64px}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;color:var(--ink-3);margin:0 0 12px}
+h1{font-family:var(--f-disp);font-weight:900;font-size:clamp(27px,5vw,42px);line-height:1.25;margin:0 0 14px}
+.lede{font-size:15px;color:var(--ink-2);max-width:68ch;margin:0 0 26px}
+.bar{display:flex;gap:10px 18px;align-items:center;flex-wrap:wrap;padding:12px 14px;background:var(--paper);border:1px solid var(--rule);border-radius:8px 8px 0 0}
+.bar label,.bar .lab{font-size:13px;color:var(--ink-2)}
+.grp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+select,button{font-family:var(--f-body);font-size:13px;color:var(--ink);background:var(--paper);border:1px solid var(--rule-2);border-radius:6px;padding:7px 12px;cursor:pointer}
+select{max-width:100%}
+button:hover,select:hover{border-color:var(--ink-3)}
+button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.seg{display:inline-flex;border:1px solid var(--rule-2);border-radius:6px;overflow:hidden}
+.seg button{border:none;border-radius:0;padding:7px 11px;background:transparent;color:var(--ink-2)}
+.seg button+button{border-left:1px solid var(--rule-2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--ground)}
+.count{font-family:var(--f-mono);font-size:13px;color:var(--ink-2);margin-left:auto;font-variant-numeric:tabular-nums}
+.sub{padding:10px 14px 11px;background:var(--sunk);border:1px solid var(--rule);border-top:none;border-radius:0 0 8px 8px;margin:0 0 18px;font-size:12.5px;color:var(--ink-2);line-height:1.75}
+.sub p{margin:0}
+.sub p+p{margin-top:4px}
+.sub b{color:var(--ink)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:0 7px;border-radius:3px;margin-right:6px;color:#fff;line-height:1.7;vertical-align:1px}
+.tag.punish{background:var(--hot)}
+.tag.reward{background:var(--cool)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr) minmax(0,1.1fr);gap:16px}
+@media(max-width:940px){.cols{grid-template-columns:1fr}}
+.panel{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:14px 15px;min-width:0}
+.ph{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;color:var(--ink-3);margin:0 0 3px}
+.psub{font-size:12px;color:var(--ink-3);margin:0 0 12px;line-height:1.6}
+.list{max-height:474px;overflow-y:auto;margin:0 -4px;padding:0 4px}
+.od{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:none;background:none;padding:5px 7px;border-radius:5px;font-size:13px;color:var(--ink)}
+.od:hover{background:var(--sunk)}
+.od .sw{width:8px;height:8px;border-radius:2px;flex:none}
+.od .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.od .cl{font-family:var(--f-mono);font-size:10px;color:var(--ink-3);flex:none}
+.od.done{opacity:.42}
+.od.done .nm{text-decoration:line-through}
+.gl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 12px;margin:0 0 14px}
+.gr{display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:9.5px;color:var(--ink-3)}
+.gr b{flex:none;width:34px;font-weight:400}
+.gt{flex:1;height:6px;background:var(--sunk);border-radius:3px;overflow:hidden}
+.gf{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.kc{display:grid;grid-template-columns:repeat(58,1fr);gap:1px;margin:0 0 6px}
+.kc i{aspect-ratio:1;background:var(--sunk);border-radius:1px}
+.kc i.on{background:var(--accent)}
+.kc i.dep{background:var(--hot);opacity:.32}
+.kc i.both{background:var(--hot);opacity:1}
+.rank{max-height:474px;overflow-y:auto;margin:0 -4px;padding:0 4px}
+.rr{display:flex;align-items:center;gap:8px;padding:4px 6px;font-size:12.5px;border-radius:4px;
+  width:100%;text-align:left;border:none;background:none;color:var(--ink);cursor:pointer;font-family:inherit}
+.rr:hover{background:var(--sunk)}
+.rr[aria-pressed="true"]{background:var(--sunk);outline:1px solid var(--rule-2)}
+.rr:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.rr .sw{width:8px;height:8px;border-radius:2px;flex:none}
+.rr .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rr .pc{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2);flex:none;font-variant-numeric:tabular-nums}
+.rr.self{font-weight:700}
+.why{margin:10px 0 0;padding:11px 12px;background:var(--sunk);border-radius:6px;font-size:12.5px;line-height:1.85}
+.why b{font-family:var(--f-mono);font-weight:500}
+.why .hl{color:var(--hot);font-weight:700}
+.keys{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 0;font-size:11px;color:var(--ink-3)}
+.keys i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.rr .tr{width:5px;height:5px;border-radius:50%;background:var(--hot);flex:none}
+.health{margin:18px 0 0;padding:14px 15px;background:var(--paper);border:1px solid var(--rule);border-radius:8px}
+.hrow{display:flex;align-items:baseline;gap:10px;margin:0 0 8px;flex-wrap:wrap}
+.hv{font-family:var(--f-mono);font-size:26px;font-weight:500;font-variant-numeric:tabular-nums}
+.ht{font-size:13px;color:var(--ink-2)}
+.hbar{height:8px;background:var(--sunk);border-radius:4px;overflow:hidden}
+.hf{height:100%;width:100%;background:var(--cool);transition:width .3s,background .3s}
+.note{font-size:12px;color:var(--ink-3);margin:10px 0 0;line-height:1.7}
+.foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--ink-3);line-height:1.9}
+.foot a{color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<nav class="sitenav">
+  <a href="./" data-nav="errand">おつかい</a>
+  <a href="brain.html" data-nav="brain">脳の中を見る</a>
+  <a href="explainer.html" data-nav="explainer">解説</a>
+  <a href="figures.html" data-nav="figures">実験結果</a>
+  <span class="sitenav-src">MaleCNS v1.0 &times; DoOR 2.0</span>
+</nav>
+<style>
+.sitenav{display:flex;align-items:center;gap:4px;max-width:1180px;margin:0 auto;
+  padding:14px 20px 0;font-family:"Zen Kaku Gothic New",ui-sans-serif,system-ui,sans-serif}
+.sitenav a{font-size:13px;color:var(--ink-3,#7C858B);text-decoration:none;padding:6px 12px;border-radius:6px}
+.sitenav a:hover{color:var(--ink,#191D1F);background:rgba(128,128,128,.12)}
+.sitenav a[aria-current="page"]{color:var(--ink,#191D1F);font-weight:700;background:rgba(128,128,128,.14)}
+.sitenav-src{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+  letter-spacing:.1em;color:var(--ink-3,#7C858B)}
+@media(max-width:560px){.sitenav-src{display:none}}
+</style>
+<script>
+(function(){
+  // Relative links and file names, so the site works from any base path
+  // (GitHub Pages serves it under /fly-connectome/). The older pretty URLs
+  // of the local server still map to the same pages.
+  var page = location.pathname.split('/').pop().replace(/\.html$/, '');
+  var key = { '': 'errand', index: 'errand', errand: 'errand', trainer: 'brain' }[page] || page;
+  var a = document.querySelector('.sitenav a[data-nav="' + key + '"]');
+  if (a) a.setAttribute('aria-current','page');
+})();
+</script>
+
+<div class="wrap">
+<h1>脳の中を見る</h1>
+<p class="lede">実在の化学物質を、実測の配線に流し込む。左の物質をクリックすると、選んだ区画にドーパミンが届き、その匂いが罰（区画によっては報酬）と結びつきます。ハエは「その匂い」だけでなく<strong>似た匂いにも同じ反応をするようになる</strong>。何と何を混同するかを見てください。記憶を増やしていくと、区画が飽和して崩れます。</p>
+
+<div class="bar">
+  <div class="grp">
+    <label for="comp">記憶する区画</label>
+    <select id="comp"></select>
+  </div>
+  <div class="grp" role="group" aria-labelledby="wlab">
+    <span class="lab" id="wlab">使う脳</span>
+    <span class="seg" id="wiring"></span>
+  </div>
+  <button id="reset">記憶を消す</button>
+  <span class="count">覚えた匂い <b id="ntr">0</b> 件</span>
+</div>
+<div class="sub" aria-live="polite">
+  <p id="cnote"></p>
+  <p id="wnote" hidden></p>
+</div>
+
+<div class="cols">
+  <div class="panel">
+    <p class="ph">1 &mdash; ODORANT</p>
+    <p class="psub">クリックで<span class="v-verb">罰を与える</span>。DoOR 2.0 の実測応答がある <b id="nod">0</b> 種。</p>
+    <div class="list" id="list"></div>
+  </div>
+
+  <div class="panel">
+    <p class="ph">2 &mdash; INSIDE</p>
+    <p class="psub">上: 糸球体の応答（実測）。下: ケニヨン細胞 <b id="nkc">0</b> 個のうち点灯した <b id="nlit">0</b> 個。赤は学習で結合が弱まった細胞。</p>
+    <div class="gl" id="gl"></div>
+    <div class="kc" id="kc"></div>
+    <p class="note" id="kcnote">匂いを選ぶと点灯します。</p>
+    <div class="keys" id="keys" hidden>
+      <span><i style="background:var(--accent)"></i>この匂いが光らせるKC</span>
+      <span><i style="background:var(--hot)"></i>うち、弱められている</span>
+      <span><i style="background:var(--hot);opacity:.32"></i>弱められているが光らない</span>
+    </div>
+    <div class="why" id="why" hidden></div>
+  </div>
+
+  <div class="panel">
+    <p class="ph" id="rankhead">3 &mdash; WHAT IT NOW AVOIDS</p>
+    <p class="psub">区画への入力がどれだけ落ちたか。大きいほど強く<span class="v-act">避ける</span>。●印は直接教えた匂い。<br><b>行をクリックすると、なぜそうなるかが中央に出ます。</b></p>
+    <div class="rank" id="rank"></div>
+  </div>
+</div>
+
+<div class="health">
+  <div class="hrow">
+    <span class="hv" id="hv">&mdash;</span>
+    <span class="ht" id="ht">まだ何も覚えていません</span>
+  </div>
+  <div class="hbar"><div class="hf" id="hf"></div></div>
+  <p class="note">覚えた匂いのうち、未学習の匂いときちんと区別できているものの割合（未学習の匂いの下位10%より入力が小さければ「区別できている」とみなす）。学習はシナプスを<strong>弱める</strong>方向にしか働かないので、書き込むほど余地がなくなり、いずれ崩れます。小さい区画ほど早く崩れます。</p>
+</div>
+
+<p class="foot" id="foot"></p>
+</div>
+
+<script>window.MB_DATA = /*__DATA__*/ null;</script>
+<script>
+(function(){
+var D = window.MB_DATA;
+if(!D){ document.getElementById('list').textContent = 'data missing'; return; }
+
+var CLS = {ester:'#C2557A',acid:'#D85A30',alcohol:'#1D9E75',arom:'#7F77DD',terpene:'#639922',
+           ketone:'#378ADD',aldehyde:'#BA7517',amine:'#5DCAA5',sulfid:'#888780'};
+function col(c){ return CLS[c] || '#888780'; }
+function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// The same subtraction happens in every compartment. What differs is which way
+// the MBON pushes behaviour, and in the fly the dopamine and the MBON of one
+// compartment are paired with opposite signs (Aso et al. 2014).
+var VAL = {
+  punish: {tag:'罰', verb:'罰を与える', act:'避ける', acts:'避けるようになる', head:'WHAT IT NOW AVOIDS',
+           mech:'この区画のMBONは「近づけ」を出す。罰のドーパミンがその入力を削ると、ハエは避けるようになる。'},
+  reward: {tag:'報酬', verb:'報酬を与える', act:'近づく', acts:'近づくようになる', head:'WHAT IT NOW SEEKS',
+           mech:'この区画のMBONは「避けろ」を出す。報酬のドーパミンがその入力を削ると、ハエは近づくようになる。'}
+};
+var WIRINGS = [
+  {key:'real', label:'本物'},
+  {key:'swap', label:'シャッフル'},
+  {key:'uniform', label:'でたらめ'}
+];
+
+var N_KC = D.n_kc, ODS = D.odors, ETA = D.eta, K = D.kc_per_odor;
+var comp = 0, wiring = 'real', w = null, base = null, trained = [], compare = -1;
+
+function kcOf(i, wk){ return D.codes[wk || wiring][i]; }
+function drive(i, ww, wk){ var s=0, k=kcOf(i, wk); for(var j=0;j<k.length;j++) s+=ww[k[j]]; return s; }
+function val(){ return VAL[D.compartments[comp].valence]; }
+
+// Weights after training every odour in `list`, under wiring `wk`.
+function trainedWeights(list, wk){
+  var ww = Float64Array.from(D.compartments[comp].w);
+  list.forEach(function(i){ var k = kcOf(i, wk); for(var j=0;j<k.length;j++) ww[k[j]] *= (1-ETA); });
+  return ww;
+}
+function rebuild(){
+  w = trainedWeights(trained, wiring);
+  var w0 = D.compartments[comp].w;
+  base = ODS.map(function(o,i){ return drive(i, w0); });
+}
+function drops(ww, wk){
+  var w0 = D.compartments[comp].w;
+  return ODS.map(function(o,i){ var b = drive(i, w0, wk); return b > 0 ? (b - drive(i, ww, wk)) / b : 0; });
+}
+function pearson(a, b){
+  var n=a.length, ma=0, mb=0, sab=0, saa=0, sbb=0, i;
+  for(i=0;i<n;i++){ ma+=a[i]; mb+=b[i]; } ma/=n; mb/=n;
+  for(i=0;i<n;i++){ var x=a[i]-ma, y=b[i]-mb; sab+=x*y; saa+=x*x; sbb+=y*y; }
+  return saa>0 && sbb>0 ? sab/Math.sqrt(saa*sbb) : 0;
+}
+function depressed(){
+  // Which Kenyon cells has training weakened? This is the whole mechanism:
+  // a new odour is affected exactly to the extent that its cells are in here.
+  var w0 = D.compartments[comp].w, out = new Uint8Array(N_KC);
+  for (var i = 0; i < N_KC; i++) if (w[i] < w0[i] - 1e-9) out[i] = 1;
+  return out;
+}
+
+// How much of the real code survives each rewiring: the share of an odour's
+// lit cells that are the same cells as under the real wiring, averaged.
+var SAME = {};
+WIRINGS.forEach(function(wd){
+  var tot = 0;
+  ODS.forEach(function(o,i){
+    var real = {}; kcOf(i,'real').forEach(function(c){ real[c]=1; });
+    tot += kcOf(i, wd.key).filter(function(c){ return real[c]; }).length / K;
+  });
+  SAME[wd.key] = tot / ODS.length;
+});
+
+// ---- build static DOM
+var sel = document.getElementById('comp');
+D.compartments.forEach(function(c,i){
+  var op=document.createElement('option'); op.value=i;
+  op.textContent = c.label + '  ·  ' + VAL[c.valence].tag + '  ·  ' + c.kc_inputs.toLocaleString() + ' KC';
+  sel.appendChild(op);
+});
+var seg = document.getElementById('wiring'), segBtn = [];
+WIRINGS.forEach(function(wd){
+  var b=document.createElement('button'); b.type='button'; b.textContent=wd.label;
+  b.addEventListener('click', function(){ wiring = wd.key; rebuild(); render(); });
+  seg.appendChild(b); segBtn.push(b);
+});
+document.getElementById('nod').textContent = ODS.length;
+document.getElementById('nkc').textContent = N_KC.toLocaleString();
+document.getElementById('foot').innerHTML =
+  '配線: ' + esc(D.source.connectome) + '（CC BY 4.0）右半球、ALPN ' + D.n_pn + '本 → ケニヨン細胞 ' + N_KC.toLocaleString() +
+  '個 → MBON。neuPrint の公開エンドポイントから取得。<br>' +
+  '匂い: <a href="https://github.com/ropensci/DoOR.data">DoOR 2.0</a> のコンセンサス応答行列（CC BY-SA 4.0）。' + D.gloms.length + '糸球体が両データで一致。<br>' +
+  '学習則: ドーパミン依存のLTD。点灯したケニヨン細胞と、その区画のMBONとの結合だけを ' + Math.round(ETA*100) + '% 弱める。' +
+  '罰と報酬の区別は文献（Aso et al. 2014）による。<br>' +
+  '合成データは使っていません。匂いも配線も実測値で、混同は計算の結果として出てきたものです。' +
+  '全物質を順に罰したときの集計は docs/RESULTS.md の実験4に。';
+
+var glWrap = document.getElementById('gl'), glFill = [];
+D.gloms.forEach(function(g){
+  var row=document.createElement('div'); row.className='gr';
+  row.innerHTML='<b>'+esc(g)+'</b><span class="gt"><span class="gf"></span></span>';
+  glWrap.appendChild(row); glFill.push(row.querySelector('.gf'));
+});
+
+var kcWrap = document.getElementById('kc'), kcEl = [];
+for(var i=0;i<N_KC;i++){ var d=document.createElement('i'); kcWrap.appendChild(d); kcEl.push(d); }
+
+var listWrap = document.getElementById('list'), listEl = [];
+ODS.forEach(function(o,i){
+  var b=document.createElement('button'); b.className='od'; b.type='button';
+  b.innerHTML='<span class="sw" style="background:'+col(o.cls)+'"></span>'+
+              '<span class="nm"></span><span class="cl">'+esc(o.cls)+'</span>';
+  b.querySelector('.nm').textContent=o.name;
+  b.addEventListener('click', function(){ teach(i); });
+  listWrap.appendChild(b); listEl.push(b);
+});
+
+var rankWrap = document.getElementById('rank');
+
+// ---- interactions
+function teach(i){
+  if(trained.indexOf(i) < 0){
+    var k = kcOf(i);
+    for(var j=0;j<k.length;j++) w[k[j]] *= (1-ETA);
+    trained.push(i);
+  }
+  compare = i;
+  render();
+}
+
+function renderNotes(){
+  var c = D.compartments[comp], v = VAL[c.valence];
+  document.getElementById('cnote').innerHTML =
+    '<span class="tag '+c.valence+'">'+v.tag+'</span><b>'+esc(c.label)+'</b>　'+esc(c.note)+'。'+v.mech;
+  Array.prototype.forEach.call(document.querySelectorAll('.v-verb'), function(e){ e.textContent = v.verb; });
+  Array.prototype.forEach.call(document.querySelectorAll('.v-act'), function(e){ e.textContent = v.act; });
+  document.getElementById('rankhead').textContent = '3 — ' + v.head;
+
+  segBtn.forEach(function(b, i){ b.setAttribute('aria-pressed', WIRINGS[i].key === wiring ? 'true' : 'false'); });
+  var wn = document.getElementById('wnote');
+  if(wiring === 'real'){ wn.hidden = true; return; }
+  var what = wiring === 'swap'
+    ? '<b>シャッフルした脳</b>: どの細胞も、つながる本数と強さは本物と同じまま、つなぎ先を一本残らず入れ替えた。'
+    : '<b>でたらめな脳</b>: 同じ本数のつながりを、区別なくばら撒いた。どの入力が多くの細胞に届くかという偏りも消える。';
+  var same = '同じ匂いで光るKCは、実測と平均 <b>' + Math.round(100*SAME[wiring]) + '%</b> しか重ならない（偶然でも ' +
+             Math.round(100*K/N_KC) + '%）。';
+  var r = '';
+  if(trained.length){
+    var here = drops(w, wiring), real = drops(trainedWeights(trained, 'real'), 'real');
+    r = 'それでも右の列の数値は、本物の脳と <b>r = ' + pearson(here, real).toFixed(2) + '</b> で一致する。';
+  } else {
+    r = '匂いを' + v.verb.replace('を与える','') + 'と結びつけて、右の列が実測とどれだけ変わるか見てください。';
+  }
+  wn.innerHTML = what + same + r;
+  wn.hidden = false;
+}
+
+function render(){
+  var v = val();
+  var o = compare >= 0 ? ODS[compare] : null;
+  var why = document.getElementById('why'), keys = document.getElementById('keys');
+  renderNotes();
+
+  if(o){
+    var lit_kc = kcOf(compare);
+    o.glom.forEach(function(x,gi){ glFill[gi].style.width = Math.round(Math.min(1,x)*100)+'%'; });
+    var dep = depressed();
+    var w0 = D.compartments[comp].w;
+    var lit = new Uint8Array(N_KC), shared = 0;
+    lit_kc.forEach(function(i){ lit[i]=1; if(dep[i] && w0[i] > 0) shared++; });
+    for(var i=0;i<N_KC;i++){
+      kcEl[i].className = lit[i] ? (dep[i] ? 'on both' : 'on') : (dep[i] ? 'dep' : '');
+    }
+    document.getElementById('nlit').textContent = lit_kc.length;
+    document.getElementById('kcnote').textContent = '「'+o.name+'」が点灯させた '+lit_kc.length+' 個。';
+
+    if(trained.length){
+      var d = drive(compare, w), b = base[compare], drop = b>0 ? (b-d)/b*100 : 0;
+      // Count only the cells this compartment actually reads. A Kenyon cell
+      // with no synapse onto this MBON cannot be depressed and carries no
+      // weight, so including it would understate the share.
+      var wAll = 0, wDep = 0, readable = 0;
+      lit_kc.forEach(function(i){
+        if(w0[i] <= 0) return;
+        readable++; wAll += w0[i]; if(dep[i]) wDep += w0[i];
+      });
+      var wShare = wAll > 0 ? 100*wDep/wAll : 0;
+      var cShare = readable > 0 ? 100*shared/readable : 0;
+      var unread = lit_kc.length - readable;
+      var isTrained = trained.indexOf(compare) >= 0;
+      var via = isTrained
+        ? 'この匂い自体を教えたので、光る細胞はすべて弱められている。'
+        : (shared >= 5
+            ? 'この匂いは教えていない。それでも' + v.act + 'のは、細胞を共有しているから。'
+            : 'この匂いは教えていない。そして細胞がほとんど重なっていないので、ほぼ影響を受けない。');
+      // Only worth pointing out when enough cells overlap for the gap to mean
+      // something; on one or two cells it is just noise.
+      var gap = (!isTrained && shared >= 10 && Math.abs(wShare - cShare) >= 3)
+        ? '<div style="margin-top:7px;font-size:11.5px;color:var(--ink-3);line-height:1.75">' +
+          '細胞の数では <b>' + cShare.toFixed(0) + '%</b> なのにシナプス数では <b>' + wShare.toFixed(0) + '%</b> を占めるのは、' +
+          '共有している細胞のほうが' + (wShare > cShare ? '結合が太い' : '結合が細い') + 'から。' +
+          '低下率を決めるのは細胞の数ではなく、シナプス数のほう。</div>'
+        : '';
+      // drop = ETA x share holds exactly only while every weakened cell has
+      // been weakened once. A cell shared by two trained odours is weakened
+      // twice, and the simple product then understates the drop.
+      var expected = ETA * wShare;
+      var formula = Math.abs(expected - drop) < 0.05
+        ? '→ 弱める強さ <b>' + ETA.toFixed(2) + '</b> × <b>' + wShare.toFixed(1) + '%</b> = ' +
+          '区画への入力が <span class="hl">' + drop.toFixed(1) + '%</span> 低下'
+        : '→ 区画への入力が <span class="hl">' + drop.toFixed(1) + '%</span> 低下' +
+          '<span style="color:var(--ink-3)">（' + ETA.toFixed(2) + ' × ' + wShare.toFixed(1) + '% = ' + expected.toFixed(1) +
+          '% より大きいのは、複数の匂いで重ねて弱められた細胞があるから）</span>';
+      why.innerHTML =
+        '<div>' + via + '</div>' +
+        '<div style="margin-top:6px">「' + esc(o.name) + '」が光らせる ' + lit_kc.length + ' 個のうち、' +
+        'この区画が読むのは <b>' + readable + '</b> 個' +
+        (unread ? '<span style="color:var(--ink-3)">（残り ' + unread + ' 個はこの区画に結合がない）</span>' : '') +
+        '。そのうち <span class="hl">' + shared + ' 個</span>（<b>' + cShare.toFixed(0) + '%</b>）が弱められている</div>' +
+        '<div style="margin-top:4px">その細胞が持つシナプス数は、この匂いの入力全体の <b>' + wShare.toFixed(1) + '%</b></div>' +
+        '<div style="margin-top:4px">' + formula + '</div>' + gap;
+      why.hidden = false; keys.hidden = false;
+    } else {
+      why.hidden = true; keys.hidden = false;
+    }
+  } else {
+    why.hidden = true; keys.hidden = true;
+    glFill.forEach(function(f){ f.style.width = '0'; });
+    kcEl.forEach(function(e){ e.className = ''; });
+    document.getElementById('nlit').textContent = 0;
+    document.getElementById('kcnote').textContent = '匂いを選ぶと点灯します。';
+  }
+
+  // ranking by drive reduction
+  var rows = ODS.map(function(od,i){
+    var d = drive(i, w), b = base[i];
+    return {i:i, pc: b>0 ? (b-d)/b : 0, o:od};
+  }).sort(function(a,b){ return b.pc-a.pc; });
+
+  rankWrap.innerHTML='';
+  if(trained.length) rows.forEach(function(r){
+    // Every odour stays listed, including the ones at 0%. Those are the
+    // evidence: a chemical whose Kenyon cells do not overlap is untouched.
+    var el=document.createElement('button');
+    el.type='button';
+    el.className='rr'+(trained.indexOf(r.i)>=0?' self':'');
+    el.setAttribute('aria-pressed', r.i===compare ? 'true' : 'false');
+    el.innerHTML='<span class="sw" style="background:'+col(r.o.cls)+'"></span>'+
+      '<span class="nm"></span>'+
+      (trained.indexOf(r.i)>=0?'<span class="tr"></span>':'')+
+      '<span class="pc">'+(r.pc*100).toFixed(1)+'%</span>';
+    el.querySelector('.nm').textContent=r.o.name;
+    el.addEventListener('click', function(){ compare = r.i; render(); });
+    rankWrap.appendChild(el);
+  });
+  if(!rankWrap.children.length)
+    rankWrap.innerHTML='<p class="note">まだ何も教えていません。</p>';
+
+  listEl.forEach(function(b,i){ b.className='od'+(trained.indexOf(i)>=0?' done':''); });
+  document.getElementById('ntr').textContent = trained.length;
+
+  // health: how many trained odours still read clearly below the untrained ones
+  var hv=document.getElementById('hv'), ht=document.getElementById('ht'), hf=document.getElementById('hf');
+  if(!trained.length){
+    hv.textContent='—'; ht.textContent='まだ何も覚えていません';
+    hf.style.width='100%'; hf.style.background='var(--cool)';
+  } else {
+    var untr=[]; ODS.forEach(function(od,i){ if(trained.indexOf(i)<0) untr.push(drive(i,w)); });
+    untr.sort(function(a,b){return a-b;});
+    var thr = untr.length ? untr[Math.floor(untr.length*0.1)] : 0;
+    var ok = trained.filter(function(i){ return drive(i,w) < thr; }).length;
+    var pct = Math.round(100*ok/trained.length);
+    hv.textContent = ok+' / '+trained.length;
+    ht.textContent = 'まだ区別できている匂い　（'+pct+'%）';
+    hf.style.width = pct+'%';
+    hf.style.background = pct>=80?'var(--cool)':(pct>=50?'var(--accent)':'var(--hot)');
+  }
+}
+
+sel.addEventListener('change', function(e){ comp=+e.target.value; trained=[]; compare=-1; rebuild(); render(); });
+document.getElementById('reset').addEventListener('click', function(){ trained=[]; compare=-1; rebuild(); render(); });
+
+rebuild(); render();
+})();
+</script>
+</html>

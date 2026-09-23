@@ -1,0 +1,28 @@
+<nav class="sitenav">
+  <a href="./" data-nav="errand">おつかい</a>
+  <a href="brain.html" data-nav="brain">脳の中を見る</a>
+  <a href="explainer.html" data-nav="explainer">解説</a>
+  <a href="figures.html" data-nav="figures">実験結果</a>
+  <span class="sitenav-src">MaleCNS v1.0 &times; DoOR 2.0</span>
+</nav>
+<style>
+.sitenav{display:flex;align-items:center;gap:4px;max-width:1180px;margin:0 auto;
+  padding:14px 20px 0;font-family:"Zen Kaku Gothic New",ui-sans-serif,system-ui,sans-serif}
+.sitenav a{font-size:13px;color:var(--ink-3,#7C858B);text-decoration:none;padding:6px 12px;border-radius:6px}
+.sitenav a:hover{color:var(--ink,#191D1F);background:rgba(128,128,128,.12)}
+.sitenav a[aria-current="page"]{color:var(--ink,#191D1F);font-weight:700;background:rgba(128,128,128,.14)}
+.sitenav-src{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+  letter-spacing:.1em;color:var(--ink-3,#7C858B)}
+@media(max-width:560px){.sitenav-src{display:none}}
+</style>
+<script>
+(function(){
+  // Relative links and file names, so the site works from any base path
+  // (GitHub Pages serves it under /fly-connectome/). The older pretty URLs
+  // of the local server still map to the same pages.
+  var page = location.pathname.split('/').pop().replace(/\.html$/, '');
+  var key = { '': 'errand', index: 'errand', errand: 'errand', trainer: 'brain' }[page] || page;
+  var a = document.querySelector('.sitenav a[data-nav="' + key + '"]');
+  if (a) a.setAttribute('aria-current','page');
+})();
+</script>

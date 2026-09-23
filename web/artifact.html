@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ハエの脳の配線図</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F1F3F0; --paper:#FAFBF9; --ink:#191D1F; --ink-2:#4B5257; --ink-3:#7C858B;
+  --rule:#D7DBD6; --rule-2:#C3C9C2;
+  --amber:#B4741D; --rose:#B0436B; --teal:#26775A; --verm:#C04326; --blue:#3A6BA8;
+  --stage:#0F1214;
+  --f-disp:"Zen Old Mincho",ui-serif,Georgia,serif;
+  --f-body:"Zen Kaku Gothic New",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#121517; --paper:#181C1F; --ink:#E8EBE8; --ink-2:#AEB6BB; --ink-3:#7F888E;
+    --rule:#2A3034; --rule-2:#3A4145;
+    --amber:#E0A050; --rose:#DE7CA0; --teal:#4FB58C; --verm:#E9765A; --blue:#77A6DE;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#121517; --paper:#181C1F; --ink:#E8EBE8; --ink-2:#AEB6BB; --ink-3:#7F888E;
+  --rule:#2A3034; --rule-2:#3A4145;
+  --amber:#E0A050; --rose:#DE7CA0; --teal:#4FB58C; --verm:#E9765A; --blue:#77A6DE;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-body);font-weight:400;line-height:1.85;-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding-inline:20px;padding-block:44px 72px}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;color:var(--ink-3);margin:0 0 14px}
+h1{font-family:var(--f-disp);font-weight:900;font-size:clamp(30px,6vw,50px);line-height:1.24;letter-spacing:.01em;margin:0 0 18px;text-wrap:balance}
+.lede{font-size:clamp(15px,2.2vw,17px);color:var(--ink-2);max-width:60ch;margin:0 0 36px}
+.stage-shell{background:var(--stage);border-radius:6px;overflow:hidden;position:relative;border:1px solid var(--rule)}
+canvas#stage{display:block;width:100%;height:560px;max-width:100%}
+.transport{display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--stage);border-top:1px solid #23292D}
+button.tbtn{appearance:none;border:1px solid #333B40;background:#1A1F22;color:#EDEFEC;width:40px;height:40px;border-radius:50%;cursor:pointer;display:grid;place-items:center;flex:none;font-size:13px;font-family:var(--f-mono);transition:background .15s}
+button.tbtn:hover{background:#252B2F}
+button.tbtn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.track{flex:1;height:24px;position:relative;cursor:pointer}
+.track-rail{position:absolute;top:10px;left:0;right:0;height:4px;background:#2C3337;border-radius:2px}
+.track-fill{position:absolute;top:10px;left:0;height:4px;background:#C8CDC8;border-radius:2px;width:0}
+.tick{position:absolute;top:6px;width:1px;height:12px;background:#454D52}
+.clock{font-family:var(--f-mono);font-size:12px;color:#8A9199;flex:none;font-variant-numeric:tabular-nums}
+.cap{background:var(--paper);border:1px solid var(--rule);border-top:none;padding:22px 24px 24px;min-height:150px}
+.cap-h{font-family:var(--f-disp);font-weight:700;font-size:19px;margin:0 0 8px;line-height:1.5}
+.cap-b{font-size:15px;color:var(--ink-2);margin:0;max-width:62ch}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 0}
+.chip{appearance:none;font-family:var(--f-body);font-size:13px;letter-spacing:0;padding:8px 11px;min-height:40px;border-radius:3px;border:1px solid var(--rule-2);background:transparent;color:var(--ink-2);cursor:pointer;transition:background .15s,color .15s}
+.chip:hover{border-color:var(--ink-3);color:var(--ink-2)}
+.chip[aria-current="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.chip:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.rule{height:1px;background:var(--rule);margin:56px 0 44px;border:none}
+h2{font-family:var(--f-disp);font-weight:700;font-size:26px;margin:0 0 6px;line-height:1.45}
+h2 .pl{font-family:var(--f-mono);font-size:12px;font-weight:400;color:var(--ink-3);letter-spacing:.14em;display:block;margin-bottom:8px}
+h3{font-family:var(--f-body);font-weight:700;font-size:16px;margin:30px 0 4px}
+p{margin:0 0 14px;max-width:64ch}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:26px 0}
+.cell{background:var(--paper);padding:18px 20px}
+.cell .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.13em;color:var(--ink-3);margin:0 0 6px}
+.cell .v{font-family:var(--f-mono);font-size:25px;font-weight:500;margin:0 0 4px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.cell .n{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.65}
+.verdict{border-left:3px solid var(--verm);padding:2px 0 2px 18px;margin:26px 0}
+.verdict.ok{border-left-color:var(--teal)}
+.verdict p{margin:0 0 8px}
+.verdict p:last-child{margin:0}
+.vh{font-weight:700;font-size:15px;margin:0 0 6px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:18px 0}
+th,td{text-align:left;padding:9px 12px 9px 0;border-bottom:1px solid var(--rule)}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.11em;color:var(--ink-3);font-weight:400}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;padding-right:0}
+.scroller{overflow-x:auto}
+.srcs{font-size:13px;color:var(--ink-3);line-height:2}
+.srcs a{color:var(--ink-2)}
+a{color:var(--blue)}
+.foot{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);letter-spacing:.06em;margin-top:44px;padding-top:20px;border-top:1px solid var(--rule)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:560px){.cap{padding:18px 16px 20px}.transport{gap:10px;padding:10px}.cap-h{font-size:17px}}
+</style>
+
+<nav class="sitenav">
+  <a href="./" data-nav="errand">おつかい</a>
+  <a href="brain.html" data-nav="brain">脳の中を見る</a>
+  <a href="explainer.html" data-nav="explainer">解説</a>
+  <a href="figures.html" data-nav="figures">実験結果</a>
+  <span class="sitenav-src">MaleCNS v1.0 &times; DoOR 2.0</span>
+</nav>
+<style>
+.sitenav{display:flex;align-items:center;gap:4px;max-width:1180px;margin:0 auto;
+  padding:14px 20px 0;font-family:"Zen Kaku Gothic New",ui-sans-serif,system-ui,sans-serif}
+.sitenav a{font-size:13px;color:var(--ink-3,#7C858B);text-decoration:none;padding:6px 12px;border-radius:6px}
+.sitenav a:hover{color:var(--ink,#191D1F);background:rgba(128,128,128,.12)}
+.sitenav a[aria-current="page"]{color:var(--ink,#191D1F);font-weight:700;background:rgba(128,128,128,.14)}
+.sitenav-src{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+  letter-spacing:.1em;color:var(--ink-3,#7C858B)}
+@media(max-width:560px){.sitenav-src{display:none}}
+</style>
+<script>
+(function(){
+  // Relative links and file names, so the site works from any base path
+  // (GitHub Pages serves it under /fly-connectome/). The older pretty URLs
+  // of the local server still map to the same pages.
+  var page = location.pathname.split('/').pop().replace(/\.html$/, '');
+  var key = { '': 'errand', index: 'errand', errand: 'errand', trainer: 'brain' }[page] || page;
+  var a = document.querySelector('.sitenav a[data-nav="' + key + '"]');
+  if (a) a.setAttribute('aria-current','page');
+})();
+</script>
+
+<div class="wrap">
+
+<p class="eyebrow">CONNECTOME / DROSOPHILA MELANOGASTER</p>
+<h1>ハエの脳の配線図</h1>
+<p class="lede">2026年9月、ショウジョウバエの中枢神経系まるごとの配線図が公開されました。何が分かっていて、何がまだ分かっていないのか。脳のどこに何があるかから、話題になったデモ（DoomFly）の検証、入力の入れ方、そしてこのサイトで実測した結果までを8章で。</p>
+
+<div class="stage-shell">
+  <canvas id="stage" width="1200" height="675" role="img" aria-label="ハエの脳の構造と、コネクトームを使ったシミュレーションの仕組みを順に描くアニメーション" aria-describedby="caph capb"></canvas>
+  <div class="transport">
+    <button class="tbtn" id="pp" aria-label="再生">&#9654;</button>
+    <div class="track" id="track" role="slider" aria-label="再生位置" tabindex="0" aria-valuemin="0" aria-valuemax="200" aria-valuenow="0">
+      <div class="track-rail"></div><div class="track-fill" id="fill"></div>
+    </div>
+    <span class="clock"><span id="cnow">0:00</span> / 3:20</span>
+  </div>
+</div>
+<div class="cap">
+  <p class="cap-h" id="caph">3ミリの体に、600マイクロメートルの脳</p>
+  <p class="cap-b" id="capb">ショウジョウバエは体長わずか3mm。その頭の中にある脳は幅0.6mmほどで、ケシ粒よりも小さい。</p>
+  <div class="chips" id="chips"></div>
+</div>
+
+<hr class="rule">
+
+<h2><span class="pl">A — H / 各章の要点</span>アニメーションで飛ばした細かい話</h2>
+<p>再生中に出てこない数字や、判断の根拠をここにまとめます。章の見出しは上のアニメーションと対応しています。</p>
+
+<h3>B — 脳のどこに何があるか</h3>
+<p>ハエの脳でいちばん場所を食っているのは<strong>視覚</strong>です。左右の視葉（optic lobe）だけで脳全体のおよそ半分のニューロンが入っています。学習と記憶を担うキノコ体は、それに比べるとずっと小さい。</p>
+
+<div class="grid2">
+  <div class="cell"><p class="k">全中枢神経系</p><p class="v">166,700</p><p class="n">ニューロン数。2026年公開の MaleCNS v1.0。脳と腹側神経索の合計</p></div>
+  <div class="cell"><p class="k">シナプス結合</p><p class="v">1.25億</p><p class="n">有向の神経間結合にまとめると約2,550万本</p></div>
+  <div class="cell"><p class="k">細胞型</p><p class="v">11,710</p><p class="n">形と結合パターンから分類された種類の数</p></div>
+  <div class="cell"><p class="k">ケニヨン細胞</p><p class="v">4,064</p><p class="n">左右のキノコ体の合計。全体の2.4%しかない。メスのFlyWireでは約5,000</p></div>
+</div>
+
+<h3>C — 2024年版と2026年版のちがい</h3>
+<div class="scroller">
+<table>
+<thead><tr><th>　</th><th>FlyWire（2024年10月）</th><th>MaleCNS（2026年9月）</th></tr></thead>
+<tbody>
+<tr><td>性別</td><td>メス</td><td>オス</td></tr>
+<tr><td>範囲</td><td>脳のみ</td><td>脳 ＋ 腹側神経索</td></tr>
+<tr><td>ニューロン数</td><td class="num">約 139,000</td><td class="num">166,700</td></tr>
+<tr><td>できるようになったこと</td><td>—</td><td>感覚入力から脚・翅の動きまでを一本で追える。雌雄で配線が分岐する場所を特定できる</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>E — なぜ「一番静かなもの」が答えになるのか</h3>
+<p>ハエの学習は、結合を強めるのではなく<strong>弱める</strong>方向に働きます。ドーパミンが降りかかった区画では、そのとき光っていたケニヨン細胞との結合だけが選択的に弱くなる。だから訓練後は、正解に対応する出力ニューロンが<strong>もっとも入力を受けていない</strong>状態になります。「一番静かな出口が答え」という読み方は、この引き算の学習則から来ています。</p>
+
+<h3>F — DoomFly は何ができて、何ができていないのか</h3>
+<div class="verdict">
+<p class="vh">できていること</p>
+<p>ゲーム画面を3,335個の光受容細胞への入力に変換し、166,700ニューロンを漏れ積分発火モデルで回して、下行性ニューロン DNp20 / DNpe017 の発火をコントローラ操作に対応させる。信号はたしかに通っている。</p>
+</div>
+<div class="verdict">
+<p class="vh">できていないこと</p>
+<p>作者のリポジトリが負の結果を明記しています。ダメージ時に2個のドーパミン細胞へ嫌悪刺激を入れ、4,184本の結合を可塑性ルールで動かしているものの、<strong>v6候補は視覚・条件付け・生存の検証をすべて不合格</strong>。約3,000回の試行で生存時間は伸びていません。</p>
+</div>
+<p>理由は単純です。コネクトームが与えるのは「どこが繋がっていて、興奮性か抑制性か」まで。<strong>どのくらい強く繋がっているかは含まれていません。</strong>シナプスの本数は強さの代理にすぎず、実際の強さは1シナプスあたりのコンダクタンス、受容体の構成、短期可塑性の状態の積で決まります。この未知数が結合の本数ぶん、つまり2,550万個あります。</p>
+
+<h3>G — 入力をどこから入れるか</h3>
+<p>キノコ体のシミュレーションに何かを覚えさせるとき、入力をどの層から入れるかで、結果の意味が変わります。</p>
+<div class="verdict ok">
+<p class="vh">本物の匂いは、糸球体でまとめられてから入る</p>
+<p>受容体が拾った匂いは約50個の糸球体に集まり、同じ糸球体から出る投射ニューロンは、ほぼ同じ信号をキノコ体へ運びます。右半球では、匂いを運ぶ糸球体およそ50に対して、投射ニューロンは162本あります。</p>
+</div>
+<div class="verdict">
+<p class="vh">投射ニューロンに直接入れると、本物の鼻には出せない入力になる</p>
+<p>画像などを投射ニューロン1本ずつに別々の値として入れる方法は手軽で、キノコ体に何かを覚えさせるデモでよく使われます。ただ、同じ糸球体の投射ニューロンがバラバラの信号を運ぶことは実際には起こらず、入力の自由度が水増しされます。すると、でたらめな配線の成績が実際より良く見えます。このサイトの実験1の最初の版もこの入れ方をしていて、あとで直しました（docs/RESULTS.md）。</p>
+</div>
+<p>このサイトのデモと実験では、実在の化学物質に対する受容体の実測応答（DoOR 2.0）を、糸球体から入れています。だから結果を、本物のハエの話として読めます。</p>
+
+<h3>H — このサイトで実測したこと</h3>
+<p>右半球のキノコ体の実測配線を、性質の一部だけを残したランダム配線と比べました。匂いは、統計を揃えた合成データと、DoOR 2.0 の実在の化学物質67種の両方で試しています。</p>
+<div class="verdict ok">
+<p class="vh">どこがどこに繋がるかには、情報がない</p>
+<p>各入口が何個のスイッチに届くかを保ったまま、相手を一本残らず入れ替えても、成績は変わりません。実在の匂いで測ると、実測の配線は張り替えた20本の分布の<strong>ちょうど真ん中</strong>でした。同じ匂いで光るスイッチは実測と平均8%しか重ならない（偶然でも5%）のに、罰を与えたあとに何を避けるかは実測と r = 0.93 で一致します。</p>
+</div>
+<div class="verdict ok">
+<p class="vh">ただし、入口ごとの偏りには意味がある</p>
+<p>一様ランダムな配線のほうが、似た匂いを似たコードにする成績は上です（実在の匂いで 0.92 対 0.84）。差を生むのは入口ごとの結合数の偏りで、いちばん確かなのは<strong>温度と湿度の入口をほとんど読まない</strong>こと。「食物とフェロモンに寄せている」と言いたくなりますが、統計的には支持されませんでした（p = 0.06）。</p>
+</div>
+<div class="verdict">
+<p class="vh">最初の見積もりは、差を大きく見せていた</p>
+<p>当初「実物は一様ランダムに2倍以上負ける」としていましたが、この比較はキノコ体がほとんど読まない入力（多糸球体の投射ニューロン、温度・湿度）まで正解に含めていました。それを外すと差は +112% から +67% に縮みます。残りは本物の差です。</p>
+</div>
+<p>数字の詳細と限界は、上のナビの「実験結果」と docs/RESULTS.md にあります。</p>
+
+<h3>それでも、この10年は大きな前進だった</h3>
+<p>配線図だけでは足りない。けれど配線図があると、解の空間は劇的に狭くなります。Lappalainen らは視葉64細胞型の結合だけを固定し、残りの未知パラメータを深層学習で最適化しました。タスクは「動きの検出」だけ。それでも <strong>ON/OFFチャネルへの分離も、T4/T5の方向選択性も、教えていないのに再現された</strong>。26件の実験研究の測定値と一致しています。</p>
+<p>コネクトームは答えそのものではないが、答えを含む空間を十分に狭く切り取る。いま一番確からしい結論はそこです。</p>
+
+<hr class="rule">
+
+<p class="eyebrow">SOURCES</p>
+<div class="srcs">
+<a href="https://research.google/blog/a-connectomics-milestone-mapping-the-complete-male-fruit-fly-brain/">A connectomics milestone: Mapping the complete male fruit fly brain — Google Research</a><br>
+<a href="https://www.nature.com/articles/s41586-024-07763-9">A Drosophila computational brain model reveals sensorimotor processing — Nature 2024</a><br>
+<a href="https://www.nature.com/articles/s41586-024-07939-3">Connectome-constrained networks predict neural activity across the fly visual system — Nature 2024</a><br>
+<a href="https://www.nature.com/articles/s41593-025-02080-4">Prediction of neural activity in connectome-constrained recurrent networks — Nature Neuroscience 2025</a><br>
+<a href="https://github.com/nftechie/doomfly">nftechie/doomfly — GitHub</a><br>
+<a href="https://www.science.org/doi/10.1126/science.aam9868">A neural algorithm for a fundamental computing problem — Dasgupta, Stevens &amp; Navlakha, Science 2017</a><br>
+<a href="https://elifesciences.org/articles/04580">Mushroom body output neurons encode valence and guide memory-based action selection — Aso et al., eLife 2014</a><br>
+<a href="https://www.nature.com/articles/srep21841">DoOR 2.0 — Münch &amp; Galizia, Scientific Reports 2016</a>
+</div>
+
+<p class="foot">数値は各一次資料の公称値。ステージの図はすべて模式図で、細胞の位置と数は説明のために簡略化しています。</p>
+
+</div>
+
+<script>
+(function(){
+var cv=document.getElementById('stage'),g=cv.getContext('2d');
+var W=0,H=0,dpr=1,compact=false;
+
+var C={bg:'#0E1113',pan:'#191E21',ink:'#F4F6F3',mut:'#BAC3C9',dim:'#98A4AC',
+line:'#394247',str:'#4A565E',str2:'#5C6A73',
+amber:'#F2B252',rose:'#EA83A6',teal:'#54CCA0',verm:'#F4704F',blue:'#86B4EC',gray:'#8C959B'};
+
+var SC=[
+ {k:'A',t:'ハエと脳',s:0,d:14},
+ {k:'B',t:'脳の地図',s:14,d:26},
+ {k:'C',t:'配線図の作り方',s:40,d:22},
+ {k:'D',t:'キノコ体',s:62,d:26},
+ {k:'E',t:'学習＝弱めること',s:88,d:24},
+ {k:'F',t:'DoomFly',s:112,d:26},
+ {k:'G',t:'入力の入れ方',s:138,d:34},
+ {k:'H',t:'実測してみた',s:172,d:28}
+];
+var TOT=200;
+
+var CAPS=[
+[0,'3ミリの体に、600マイクロメートルの脳','ショウジョウバエは体長わずか3mm。その頭の中にある脳は幅0.6mmほどで、ケシ粒よりも小さい。'],
+[6,'この中に、約14万個のニューロン','小さいけれど空ではありません。脳だけで約14万個、脚と翅を動かす腹側神経索まで入れると166,700個の神経細胞が詰まっています。'],
+[14,'いちばん場所を食っているのは、視覚','左右にふくらんだ大きな塊が視葉。ここだけで脳全体のおよそ半分のニューロンが入っています。ハエは見ることに脳を費やしている。'],
+[21,'においを受け取る場所','触角から来たにおい情報が最初に入るのが触角葉。ここから左右で約690本のケーブルが、次の部屋へ伸びています。'],
+[27,'キノコの形をした、記憶の部屋','これがキノコ体。ハエに何かを覚えさせたとき、脳の中で変化するのはほぼここだけです。ニューロンは左右で約4,000個、全体の2%あまり。'],
+[34,'2026年に足されたのは、この下の部分','脳から下に伸びる腹側神経索。脊髄にあたる部分で、脚と翅を実際に動かします。2024年のFlyWireには入っていませんでした。'],
+[40,'8ナノメートルずつ、削っては撮る','配線図の作り方は原始的です。脳を薄い板に切り分け、その表面をイオンビームで8nmずつ削っては電子顕微鏡で撮影する。これを数万回くり返します。'],
+[45,'AIが細胞の輪郭をなぞる','その断面の一枚ずつで、どの領域がどの細胞に属するかをAIが塗り分けます。十年がかりだったのはこの工程です。'],
+[51,'つながると、グラフになる','塗り分けた断片を縦につなぐと、一本のニューロンの立体形状が出てきます。誰と誰が何箇所で接しているかを数えれば、それが配線図。'],
+[56,'正体は、スカスカの行列','数学的にはただの有向グラフです。166,700×166,700の行列で、埋まっているのはわずか0.09%。'],
+[62,'入口・スイッチ・出口','キノコ体は三段構えです。右半球のものを実測で数えると、においを運ぶ入口162本、真ん中のスイッチ約1,900個、出口63本。このサイトのデモと実験は、この配線をそのまま使っています。'],
+[67,'光るのは、ごく一部だけ','においが入ると、約1,900個のスイッチのうちONになるのは100個ほど。割合にして5%前後。この「スカスカさ」が全体の鍵です。'],
+[75,'においごとに、違う組み合わせ','同じ細胞を同じ位置に並べて、においAとBを比較します。少し重なりながらも、光る組み合わせは異なります。においごとに固有の指紋ができる、ということです。'],
+[82,'重なりが少ないほど、記憶が干渉しにくい','光る細胞の重なりが少ないので、あるにおいを学習したとき、他のにおいの記憶への影響を小さくできます。完全に独立というわけではありません。'],
+[88,'ドーパミンが降りてくる','ハエが罰を受けると、ドーパミンを出す細胞がキノコ体の特定の区画に信号を送ります。'],
+[95,'結合は、強くなるのではなく弱くなる','このときONだったスイッチと、その区画の出口との結合だけが弱まります。学習は引き算で行われる。'],
+[103,'答えは、一番静かなやつ','だから訓練後は、正解に対応する出口がもっとも入力を受けていない状態になります。「一番静かな出口が答え」という読み方は、ここから来ています。'],
+[112,'画面を、複眼に流し込む','DoomFly がやっていること。ゲーム画面の明るさと色を、3,335個と811個の光受容細胞への入力に変換します。'],
+[118,'166,700個を、そのまま回す','間引きも差し替えもせず、実測の配線をまるごと漏れ積分発火モデルで走らせる。重みは学習したものではなく、顕微鏡で数えたシナプス数そのままです。'],
+[124,'出口をボタンに繋ぐ','下行性ニューロン DNp20 と DNpe017 の発火を、旋回と前進・発砲に割り当てる。ただしこの対応づけは作者のモデリング上の選択で、ハエ本来の機能ではありません。'],
+[129,'そして、強さが分からない','配線を一切変えずに、結合の強さだけを振ってみます。弱すぎれば沈黙、強すぎれば暴走。正しく動く幅はごく狭い。この未知数が2,550万個ぶんあります。'],
+[138,'においは、糸球体でまとめられてから入る','触角の受容体が拾ったにおいは約50個の糸球体に集まり、そこから投射ニューロンでキノコ体へ運ばれます。同じ糸球体から出る投射ニューロンは、ほぼ同じ信号を運ぶ。'],
+[149,'投射ニューロンに、直接入れることもできる','シミュレーションでは、画像などを投射ニューロン1本ずつに別々の値として入れることもできます。手軽で、キノコ体に何かを覚えさせるデモでよく使われる方法です。'],
+[157,'ただし、本物の鼻には出せない入力になる','同じ糸球体の投射ニューロンがバラバラの信号を運ぶことは、実際の匂いでは起こりません。入力の自由度は約50から162に増え、でたらめな配線の成績が実際より良く見えます。このサイトの最初の版も、これで一度間違えました。'],
+[166,'配線図は答えではない。が、答えを含む空間を狭める','ここまでが、公開されている研究の現在地です。このサイトでは、実在の化学物質を受容体の実測応答から糸球体に入れています。'],
+[172,'一本残らず張り替えても、成績は変わらない','ここからはこのサイトで測った結果。実在の匂い67種で、似た匂いが似たコードになるかを比べると、実測の配線と「全部張り替えた配線」はどちらも0.84。どの入口がどのスイッチに繋がるかには、情報がありません。'],
+[181,'ただし、偏りはある','一様ランダムな配線のほうが成績は上です。差を生むのは、入口ごとの結合数の偏り。いちばん確かなのは、温度と湿度の入口（VP系）がほとんど読まれていないことです。'],
+[190,'覚えられる数は、区画の大きさで決まる','10件覚えさせても、1,713個を読む区画はほぼ全部を区別できる。161個しか読まない区画では2割も残らない。上のナビの「脳の中を見る」で実際に試せます。覚えた匂いの商品を店から取ってこさせる「おつかい」もあります。']
+];
+
+function mk(s){var x=s>>>0;return function(){x=(x*1664525+1013904223)>>>0;return x/4294967296;};}
+function ss(a,b,x){var t=(x-a)/(b-a);t=t<0?0:t>1?1:t;return t*t*(3-2*t);}
+function cl(x){return x<0?0:x>1?1:x;}
+function T(s,x,y,sz,col,al,w,fam){g.save();g.fillStyle=col;g.textAlign=al||'left';g.textBaseline='middle';
+ g.font=(w||400)+' '+sz+'px '+(fam||'"Zen Kaku Gothic New",sans-serif');g.fillText(s,x,y);g.restore();}
+function M(s,x,y,sz,col,al){T(s,x,y,sz,col,al,400,'"IBM Plex Mono",monospace');}
+function paragraph(text,left,top,width,size,color,align,weight){
+ g.save();g.font=(weight||400)+' '+size+'px "Zen Kaku Gothic New",sans-serif';
+ var line='',rows=[];
+ Array.from(text).forEach(function(character){
+  if(line&&g.measureText(line+character).width>width){rows.push(line);line='';}
+  line+=character;
+ });
+ if(line)rows.push(line);g.restore();
+ rows.forEach(function(row,index){T(row,left,top+index*size*1.6,size,color,align,weight);});
+ return rows.length*size*1.6;
+}
+function ln(x1,y1,x2,y2,col,w,a){g.save();g.globalAlpha*=(a==null?1:a);g.strokeStyle=col;g.lineWidth=w||1;
+ g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke();g.restore();}
+function arrow(left,top,right,bottom,color,alpha){
+ var angle=Math.atan2(bottom-top,right-left);
+ ln(left,top,right,bottom,color,1.5,alpha);
+ ln(right,bottom,right-6*Math.cos(angle-0.5),bottom-6*Math.sin(angle-0.5),color,1.5,alpha);
+ ln(right,bottom,right-6*Math.cos(angle+0.5),bottom-6*Math.sin(angle+0.5),color,1.5,alpha);
+}
+function dot(x,y,r,col,a){g.save();g.globalAlpha*=(a==null?1:a);g.fillStyle=col;g.beginPath();g.arc(x,y,r,0,6.2832);g.fill();g.restore();}
+function ell(x,y,rx,ry,rot,col,a){g.save();g.globalAlpha*=(a==null?1:a);g.fillStyle=col;g.beginPath();g.ellipse(x,y,rx,ry,rot||0,0,6.2832);g.fill();g.restore();}
+function rr(x,y,w,h,r,col,a){g.save();g.globalAlpha*=(a==null?1:a);g.fillStyle=col;g.beginPath();
+ if(g.roundRect)g.roundRect(x,y,w,h,r);else g.rect(x,y,w,h);g.fill();g.restore();}
+function sell(x,y,rx,ry,rot,col,w,a){g.save();g.globalAlpha*=(a==null?1:a);g.strokeStyle=col;g.lineWidth=w||1.4;
+ g.beginPath();g.ellipse(x,y,rx,ry,rot||0,0,6.2832);g.stroke();g.restore();}
+function head(k,ttl){rr(24,20,28,28,4,C.line,1);M(k,38,35,14,C.ink,'center');
+ T(ttl,66,35,17,C.mut,'left',500);}
+function bignum(x,y,n,lab,col,a,al){g.save();g.globalAlpha*=(a==null?1:a);
+ M(n,x,y,26,col||C.ink,al||'left');T(lab,x,y+29,14,C.mut,al||'left');g.restore();}
+function scalebar(x1,x2,y,lab,a){ln(x1,y,x2,y,C.mut,1.6,a);ln(x1,y-7,x1,y+7,C.mut,1.6,a);
+ ln(x2,y-7,x2,y+7,C.mut,1.6,a);g.save();g.globalAlpha=a;M(lab,(x1+x2)/2,y+21,14,C.mut,'center');g.restore();}
+
+function legSeg(pts,w0,w1,col){
+ for(var i=0;i<pts.length-1;i++){
+  var t=i/(pts.length-1);
+  g.strokeStyle=col;g.lineWidth=w0+(w1-w0)*t;
+  g.beginPath();g.moveTo(pts[i][0],pts[i][1]);g.lineTo(pts[i+1][0],pts[i+1][1]);g.stroke();
+ }
+ for(i=1;i<pts.length-1;i++)dot(pts[i][0],pts[i][1],(w0+(w1-w0)*(i/(pts.length-1)))*0.55,col,1);
+}
+
+function wing(x,y,rot,len,col,alpha){
+ g.save();g.translate(x,y);g.rotate(rot);
+ g.fillStyle=col;g.globalAlpha*=alpha;
+ g.beginPath();
+ g.moveTo(0,0);
+ g.bezierCurveTo(len*0.35,-len*0.20, len*0.86,-len*0.17, len,-len*0.02);
+ g.bezierCurveTo(len*0.92, len*0.12, len*0.45, len*0.17, 0,0);
+ g.fill();
+ g.globalAlpha*=1.9;g.strokeStyle=col;g.lineWidth=0.9;g.stroke();
+ // longitudinal veins L1-L5 plus the two crossveins
+ g.globalAlpha*=0.79;g.lineWidth=0.8;
+ var veins=[[-0.14,-0.05],[-0.06,0.01],[0.01,0.06],[0.07,0.11],[0.13,0.15]];
+ for(var v=0;v<veins.length;v++){
+  g.beginPath();g.moveTo(len*0.10,len*veins[v][0]*0.5);
+  g.quadraticCurveTo(len*0.58,len*veins[v][0],len*0.96,len*veins[v][1]);g.stroke();
+ }
+ g.beginPath();g.moveTo(len*0.52,-len*0.055);g.lineTo(len*0.54,len*0.012);g.stroke();
+ g.beginPath();g.moveTo(len*0.74,-len*0.012);g.lineTo(len*0.76,len*0.055);g.stroke();
+ g.restore();
+}
+
+function fly(cx,cy,s,a){
+ g.save();g.globalAlpha*=(a==null?1:a);g.translate(cx,cy);g.scale(s,s);
+ g.lineCap='round';g.lineJoin='round';
+
+ var TAN='#C89152', TAN_HI='#DCA967', TAN_LO='#96682C',
+     BAND='#5E3C17', LEG='#8E6029', LEG_LO='#6B451C',
+     EYE='#B4352A', EYE_HI='#D9604F', BRIS='#4E3714',
+     WING='rgba(196,214,224,0.30)';
+
+ // ---- far-side legs, behind everything
+ legSeg([[-52,24],[-76,56],[-104,50]],3.0,1.6,LEG_LO);
+ legSeg([[-18,30],[-24,66],[-52,76]],3.2,1.6,LEG_LO);
+ legSeg([[16,30],[42,70],[10,86]],3.4,1.7,LEG_LO);
+
+ // ---- far wing
+ wing(-6,-14,-0.30,132,WING,0.16);
+
+ // ---- abdomen: five tergites, tapering, dark posterior banding
+ ell(34,6,62,40,0.05,TAN);
+ for(var i=0;i<5;i++){
+  var t=i/4, w=13-t*2.6, h=39-t*9.5, x=6+i*23;
+  ell(x,4+t*5,w,h,0.05,i%2?TAN_LO:TAN);
+  ell(x+w*0.55,4+t*5,w*0.42,h*0.97,0.05,BAND,0.55);
+ }
+ ell(20,-16,52,17,0.03,TAN_HI,0.45);          // dorsal highlight
+ ell(30,26,50,14,0.04,'#6B451C',0.30);        // ventral shade
+
+ // ---- thorax, humped, with the scutellum behind it
+ ell(-38,-2,48,41,-0.06,TAN);
+ ell(-44,-14,38,24,-0.12,TAN_HI,0.5);
+ ell(-6,10,20,22,0,TAN_LO,0.8);               // scutellum
+ ell(-38,20,40,12,0,'#6B451C',0.28);
+ // thoracic bristles
+ g.strokeStyle=BRIS;g.lineWidth=1.5;
+ var br=[[-62,-28],[-50,-34],[-36,-36],[-22,-32],[-10,-22],[-58,-16],[-14,4],[-4,0]];
+ for(i=0;i<br.length;i++){
+  g.beginPath();g.moveTo(br[i][0],br[i][1]);
+  g.lineTo(br[i][0]-4-(i%3),br[i][1]-9-(i%2)*3);g.stroke();
+ }
+
+ // ---- head, dominated by the compound eye
+ ell(-86,-10,32,31,0,TAN);
+ ell(-78,6,20,17,0,TAN_LO,0.7);               // gena
+ ell(-97,-14,23,24,-0.1,EYE);
+ // facets
+ g.save();g.beginPath();g.ellipse(-97,-14,23,24,-0.1,0,6.2832);g.clip();
+ g.globalAlpha*=0.30;g.fillStyle=EYE_HI;
+ for(var r=0;r<9;r++)for(var c=0;c<9;c++){
+  var ox=-118+c*5.2+(r%2)*2.6, oy=-36+r*5.2;
+  g.beginPath();g.arc(ox,oy,1.5,0,6.2832);g.fill();
+ }
+ g.restore();
+ dot(-105,-24,5.5,EYE_HI,0.5);
+ // proboscis, folded under the head
+ ell(-84,14,9,11,0.25,TAN_LO);
+ ell(-82,22,6,7,0.3,'#6B451C',0.8);
+ // arista: a feathered antenna, not a fan of straight lines
+ g.strokeStyle=BRIS;g.lineWidth=1.6;
+ g.beginPath();g.moveTo(-108,-2);g.quadraticCurveTo(-126,-10,-138,-24);g.stroke();
+ g.lineWidth=0.9;
+ for(i=0;i<7;i++){
+  var u=0.25+i*0.11, bx=-108+(-30)*u, by=-2+(-22)*u*u-6*u;
+  g.beginPath();g.moveTo(bx,by);g.lineTo(bx-3-i*0.6,by-7-i*0.8);g.stroke();
+  g.beginPath();g.moveTo(bx,by);g.lineTo(bx+4+i*0.4,by-5-i*0.7);g.stroke();
+ }
+
+ // ---- haltere, then the near wing over the abdomen
+ g.strokeStyle=LEG;g.lineWidth=2;
+ g.beginPath();g.moveTo(-10,8);g.lineTo(2,20);g.stroke();
+ dot(4,22,4,TAN_HI,1);
+ wing(-4,-18,-0.20,148,WING,0.24);
+
+ // ---- near legs, in front
+ legSeg([[-56,20],[-84,54],[-116,44]],3.6,1.8,LEG);
+ legSeg([[-20,28],[-26,70],[-58,82]],3.8,1.8,LEG);
+ legSeg([[14,28],[44,74],[8,92]],4.0,1.9,LEG);
+
+ g.restore();
+}
+
+function brainShape(cx,cy,s,a,hl){
+ g.save();g.globalAlpha*=(a==null?1:a);g.translate(cx,cy);g.scale(s,s);
+ function h(k,b,i){return hl===k?i:b;}
+ ell(0,6,86,62,0,h('cb','#4A565E','#657480'));
+ sell(0,6,86,62,0,'#66747E',1.6);
+ ell(0,58,48,30,0,h('sez','#46525A','#657480'));
+ sell(0,58,48,30,0,'#66747E',1.6);
+ [-1,1].forEach(function(q){
+  ell(q*128,-6,58,74,q*0.13,h('ol','#4E5A63','#8A6320'));
+  sell(q*128,-6,58,74,q*0.13,hl==='ol'?'#F2B252':'#6E7C86',1.6);
+  ell(q*124,-6,40,56,q*0.13,h('ol','#5C6A74','#B07C22'));
+  ell(q*34,44,25,21,0,h('al','#4E5A63','#1E7A5C'));
+  sell(q*34,44,25,21,0,hl==='al'?'#54CCA0':'#6E7C86',1.5);
+ });
+ ell(0,-16,42,21,0,h('cx','#4E5A63','#2C5488'));
+ sell(0,-16,42,21,0,hl==='cx'?'#86B4EC':'#6E7C86',1.5);
+ g.restore();}
+
+function mbShape(cx,cy,s,a,col){
+ g.save();g.globalAlpha*=(a==null?1:a);g.translate(cx,cy);g.scale(s,s);
+ g.strokeStyle=col;g.lineCap='round';
+ [-1,1].forEach(function(q){
+  ell(q*52,-32,21,16,0,col,1);
+  g.lineWidth=8;g.beginPath();g.moveTo(q*52,-20);g.quadraticCurveTo(q*46,14,q*30,34);g.stroke();
+  g.lineWidth=7;g.beginPath();g.moveTo(q*30,34);g.lineTo(q*26,0);g.stroke();
+  g.beginPath();g.moveTo(q*30,34);g.lineTo(q*6,39);g.stroke();
+ });
+ g.restore();}
+
+function sA(lt){
+ head('A','ハエと脳');
+ var fade=1-ss(8.4,9.4,lt),flyX=compact?W/2:W*0.25,flyY=compact?172:260;
+ var flyScale=Math.min(compact?(W-72)/300:W*0.4/300,1.2);
+ var brainX=compact?W/2:W*0.75,brainY=compact?410:264;
+ var radius=Math.min(compact?112:158,compact?(W-72)/2:W*0.2);
+ fly(flyX,flyY,flyScale,ss(-0.6,0.8,lt)*fade);
+ if(lt>1.4)scalebar(flyX-92,flyX+92,compact?264:424,'3 mm',ss(1.4,2.3,lt)*fade);
+ if(lt>2.6){
+  var zoomAlpha=ss(2.6,3.4,lt)*fade;
+  g.save();g.globalAlpha=zoomAlpha;g.strokeStyle=C.amber;g.lineWidth=1.5;
+  g.strokeRect(flyX-98*flyScale,flyY-56*flyScale,88*flyScale,72*flyScale);g.restore();
+  arrow(flyX-54*flyScale,flyY+22*flyScale,brainX-radius*0.7,brainY-radius*0.75,C.amber,zoomAlpha*0.6);
+ }
+ if(lt>3.8){
+  var brainAlpha=ss(3.8,4.8,lt);
+  sell(brainX,brainY,radius,radius,0,C.amber,1.5,brainAlpha);
+  brainShape(brainX,brainY,radius/197,brainAlpha,null);
+  if(lt>6.4){mbShape(brainX,brainY-6,radius/197,ss(6.4,7.4,lt),C.rose);
+   T('キノコ体：学習と記憶',brainX,compact?548:478,14,C.rose,'center',700);}
+ }
+ if(lt>5.4)scalebar(brainX-radius*0.7,brainX+radius*0.7,compact?574:420,'600 µm',ss(5.4,6.3,lt));
+ if(lt>8.4){
+  bignum(flyX,compact?152:228,'139,000','脳のニューロン',C.ink,ss(8.6,9.6,lt),'center');
+  bignum(flyX,compact?234:330,'166,700','神経索を含めた全体',C.amber,ss(9.8,10.8,lt),'center');}
+}
+
+function sB(lt){
+ head('B','脳の地図');
+ var brainX=compact?W/2:W*0.33,brainY=(compact?174:242)-ss(19,21,lt)*28;
+ var scale=Math.min(compact?(W-72)/372:W*0.55/372,1.15);
+ var highlight=lt<7?'ol':lt<13?'al':null;
+ brainShape(brainX,brainY,scale,ss(0,0.8,lt),highlight);
+ if(lt>10.5)ell(brainX,brainY-16*scale,42*scale,21*scale,0,C.blue,0.45);
+ if(lt>13)mbShape(brainX,brainY-10*scale,scale,ss(13,14,lt),C.rose);
+ if(lt>20){
+  var nerveAlpha=ss(20,21,lt);
+  rr(brainX-20,brainY+70*scale,40,compact?132:164,8,C.line,nerveAlpha);
+  for(var segment=0;segment<4;segment++)ell(brainX,brainY+90*scale+segment*30,26,11,0,C.teal,nerveAlpha*0.7);
+ }
+ var labels=[['視葉','視覚・脳のおよそ半分',C.amber,1.2],['触角葉','においの入口',C.teal,7],
+  ['中心複合体','方向感覚',C.blue,10.5],['キノコ体','学習と記憶・左右で約4,000個',C.rose,13],['腹側神経索','脚と翅の運動・2026年に追加',C.teal,20]];
+ var locations=[[-124*scale,-6*scale],[-34*scale,44*scale],[0,-16*scale],[52*scale,-42*scale],[0,70*scale+70]];
+ labels.forEach(function(label,index){
+  if(lt<label[3])return;
+  var markerX=brainX+locations[index][0],markerY=brainY+locations[index][1];
+  dot(markerX,markerY,11,C.bg,0.95);sell(markerX,markerY,11,11,0,label[2],1.5);
+  M(String(index+1),markerX,markerY,14,label[2],'center');
+  var left=compact?34:W*0.65,top=(compact?350:124)+index*50;
+  M(String(index+1),left,top,14,label[2],'center');T(label[0],left+18,top,16,label[2],'left',700);
+  paragraph(label[1],left+18,top+21,W-left-42,14,C.mut);
+ });
+}
+
+function cellLayout(){
+ var random=mk(21),cells=[],width=Math.min(480,W-72);
+ for(var index=0;index<30;index++){
+  var radius=8+random()*15;
+  cells.push([(W-width)/2+28+random()*(width-56),150+random()*210,radius,radius*(0.6+((index*37)%9)/12),random()*3]);
+ }
+ return cells;
+}
+
+function sC(lt){
+ head('C','配線図の作り方');
+ var colors=[C.amber,C.rose,C.teal,C.blue],width=Math.min(480,W-72),left=(W-width)/2;
+ if(lt<5.5){
+  var spread=ss(0.8,4,lt),sheetWidth=Math.min(220,W-112);
+  for(var sheet=0;sheet<18;sheet++){
+   var sheetTop=276+sheet*3-spread*sheet*8,sheetLeft=W/2-sheetWidth/2-18+spread*sheet*2;
+   g.save();g.globalAlpha=ss(0,0.8,lt)*(0.4+sheet/30);g.fillStyle='#3E4951';g.strokeStyle='#82919A';g.lineWidth=1;
+   g.beginPath();g.moveTo(sheetLeft,sheetTop);g.lineTo(sheetLeft+sheetWidth*0.75,sheetTop-34);
+   g.lineTo(sheetLeft+sheetWidth,sheetTop+20);g.lineTo(sheetLeft+sheetWidth*0.25,sheetTop+54);g.closePath();
+   g.fill();g.stroke();g.restore();}
+  bignum(W*0.28,444,'8 nm','1回に削る厚さ',C.ink,ss(1.8,2.6,lt),'center');
+  bignum(W*0.72,444,'数万回','削っては撮る',C.ink,ss(3,3.8,lt),'center');
+ } else if(lt<16){
+  var cells=cellLayout(),random=mk(33);
+  if(lt<11){
+   rr(left,116,width,276,2,C.pan);
+   cells.forEach(function(cell,index){
+    sell(cell[0],cell[1],cell[2],cell[3],cell[4],C.dim,1.5);
+    if(index/cells.length<ss(6.4,10,lt)){
+     ell(cell[0],cell[1],cell[2],cell[3],cell[4],colors[index%4],0.4);
+     sell(cell[0],cell[1],cell[2],cell[3],cell[4],colors[index%4],1.5);
+    }
+   });
+   bignum(W/2,444,'約10年','細胞を塗り分ける工程',C.ink,ss(6.8,7.6,lt),'center');
+  }else{
+   for(var edge=0;edge<86;edge++){
+    var source=cells[Math.floor(random()*cells.length)],target=cells[Math.floor(random()*cells.length)];
+    if(edge/86<ss(11.4,14.6,lt))ln(source[0],source[1],target[0],target[1],C.dim,1,0.45);
+   }
+   cells.forEach(function(cell,index){dot(cell[0],cell[1],4.5,colors[index%4],ss(11,11.8,lt));});
+   paragraph('同じ細胞をつなぎ、接触の数を数える',W/2,444,W-48,16,C.ink,'center',500);
+   T('細胞が点に、接続が線になる',W/2,500,14,C.mut,'center');
+  }
+ } else {
+  var matrixSize=Math.min(240,W-84),cellSize=matrixSize/28,matrixLeft=(W-matrixSize)/2,matrixRandom=mk(9);
+  for(var row=0;row<28;row++)for(var column=0;column<28;column++){
+   var filled=matrixRandom()>0.978;
+   rr(matrixLeft+column*cellSize,104+row*cellSize,cellSize-2,cellSize-2,1,filled?(matrixRandom()>0.5?C.teal:C.verm):'#2B3338',ss(16,16.8,lt));}
+  M('166,700 × 166,700',W/2,104+matrixSize+30,18,C.ink,'center');
+  T('埋まっているのは 0.09%',W/2,104+matrixSize+58,16,C.mut,'center');
+  bignum(W*0.28,462,'1.25億','シナプス結合',C.ink,ss(17.6,18.4,lt),'center');
+  bignum(W*0.72,462,'11,710','細胞型',C.ink,ss(18.8,19.6,lt),'center');
+  paragraph('色付きのマスの割合は、説明のため拡大。',W/2,H-44,W-48,14,C.dim,'center');
+ }
+}
+
+function kcField(ox,oy,cols,rows,cs,litSet,a,col){
+ for(var i=0;i<rows;i++)for(var j=0;j<cols;j++){
+  var id=i*cols+j,on=litSet[id];
+  rr(ox+j*cs,oy+i*cs,cs-3,cs-3,1.6,on?(col||C.rose):'#303840',a*(on?1:0.9));}
+}
+function litFor(seed,n,total){var r=mk(seed),o={},c=0;while(c<n){var k=Math.floor(r()*total);if(!o[k]){o[k]=1;c++;}}return o;}
+
+var KCC=18,KCR=16,KCN=KCC*KCR;
+
+function sD(lt){
+ head('D','キノコ体');
+ var roles=[['入口 PN','162本',C.amber],['KC','1,917個',C.rose],['出口 MBON','63本',C.teal]];
+ roles.forEach(function(role,index){
+  var center=24+(W-48)*(index+0.5)/3;
+  T(role[0],center,92,15,role[2],'center',500);T(role[1],center,116,14,C.mut,'center');
+  if(index<2)arrow(center+(W-48)/9,140,center+(W-48)*2/9,140,C.dim,0.6);
+ });
+ T('右半球の実測',W-24,35,14,C.dim,'right');
+ var patterns=[litFor(5,22,KCN),litFor(76,22,KCN)],panelWidth=(W-72)/2;
+ var cellSize=Math.min(12,(panelWidth-8)/KCC),top=222,overlap=0;
+ Object.keys(patterns[0]).forEach(function(key){if(patterns[1][key])overlap++;});
+ patterns.forEach(function(pattern,index){
+  var left=24+index*(panelWidth+24),center=left+panelWidth/2,gridLeft=center-KCC*cellSize/2;
+  var reveal=index===0?ss(3,4,lt):ss(13,14,lt),color=index===0?C.rose:C.teal;
+  T(index===0?'においA':'においB',center,178,18,color,'center',700);
+  T(index===0?'最初のにおい':'別のにおい',center,202,14,C.mut,'center');
+  kcField(gridLeft,top,KCC,KCR,cellSize,{},1,color);
+  kcField(gridLeft,top,KCC,KCR,cellSize,pattern,reveal,color);
+  if(lt>=14)Object.keys(pattern).forEach(function(key){
+   if(!patterns[1-index][key])return;
+   var cell=Number(key);rr(gridLeft+(cell%KCC)*cellSize,top+Math.floor(cell/KCC)*cellSize,cellSize-3,cellSize-3,1,C.amber);
+  });
+  T(reveal>0?'22 / 288 個':'未提示',center,top+KCR*cellSize+26,14,reveal>0?color:C.dim,'center');
+ });
+ var summaryTop=Math.max(top+KCR*cellSize+78,compact?422:470);
+ paragraph(lt>=14?'重なり '+overlap+' / 22 個':'光るのは、細胞のごく一部だけ',W/2,summaryTop,W-48,18,C.ink,'center',700);
+ paragraph(lt>=14?'同じ位置は同じ細胞。黄色が共通する細胞。':'同じケニヨン細胞を、同じ位置に並べた模式図。',W/2,summaryTop+52,W-48,14,C.mut,'center');
+}
+
+function sE(lt){
+ head('E','学習＝弱めること');
+ var panelWidth=(W-72)/2,cellSize=Math.min(9,(panelWidth-8)/15),leftCenter=24+panelWidth/2;
+ var afterLeft=48+panelWidth,afterCenter=afterLeft+panelWidth/2,weakening=cl((lt-7)/4);
+ T('光っているKC',leftCenter,94,15,C.rose,'center',500);
+ kcField(leftCenter-15*cellSize/2,116,15,13,cellSize,litFor(5,16,195),ss(0,0.8,lt),C.rose);
+ if(lt>0.8){
+  var dopamineAlpha=ss(0.8,1.8,lt);
+  dot(afterCenter,146,14,C.verm,dopamineAlpha);
+  T('ドーパミン',afterCenter,182,15,C.verm,'center',700);
+  T('罰の信号',afterCenter,205,14,C.mut,'center');
+  arrow(afterCenter,224,afterCenter,262,C.verm,dopamineAlpha);
+ }
+ T('学習前',leftCenter,290,18,C.ink,'center',700);
+ T(lt<7?'これから学習':weakening<1?'学習中':'学習後',afterCenter,290,18,C.ink,'center',700);
+ for(var panel=0;panel<2;panel++){
+  var left=24+panel*(panelWidth+24);
+  for(var row=0;row<2;row++){
+   var top=340+row*88,color=row===0?C.teal:C.verm;
+   var amount=panel===1&&row===0?1-weakening*0.8:1;
+   T(row===0?'近づく':'避ける',left,top-20,14,C.mut,'left',500);
+   M((14*amount).toFixed(1),left+panelWidth,top-20,14,C.ink,'right');
+   rr(left,top,panelWidth,18,3,'#2B3338');rr(left,top,panelWidth*amount,18,3,color);
+   if(panel===1&&row===0){
+    g.save();g.strokeStyle=C.teal;g.lineWidth=1;g.setLineDash([4,4]);g.strokeRect(left,top,panelWidth,18);g.restore();
+    if(weakening>0)T('結合が弱まる',afterCenter,top+38,14,C.teal,'center');
+   }else if(panel===1&&row===1)T('変化なし',afterCenter,top+38,14,C.mut,'center');
+  }
+ }
+ paragraph(lt>=15?'学習後は「近づく」側の入力が小さい':'信号が届いた区画の、活動中の結合だけが変わる',W/2,504,W-48,16,C.ink,'center',500);
+ T('入力の大きさ（説明用の相対値）',W/2,H-22,14,C.dim,'center');
+}
+
+function flowSlot(index){
+ var columns=compact?2:4,width=(W-48-(columns-1)*16)/columns;
+ return {left:24+(index%columns)*(width+16),top:110+Math.floor(index/columns)*218,width:width};
+}
+
+function sF(lt){
+ head('F','DoomFly');
+ var starts=[0,1.2,2.4,4.6],titles=['画面','光受容細胞','全脳','操作出力'];
+ var gain=lt<17?0.45:cl((lt-17)/7),brightnessCenter=0.45+0.2*Math.sin(lt*1.2);
+ titles.forEach(function(title,index){
+  if(lt<starts[index])return;
+  var slot=flowSlot(index),center=slot.left+slot.width/2,top=slot.top+28;
+  var figureWidth=Math.min(slot.width-8,160),figureLeft=center-figureWidth/2;
+  g.save();g.globalAlpha=ss(starts[index],starts[index]+0.8,lt);
+  T((index+1)+' '+title,center,slot.top,16,C.mut,'center',500);
+  if(index===0){
+   rr(figureLeft,top,figureWidth,90,2,'#232A2F');
+   g.fillStyle='#39434A';g.beginPath();g.moveTo(figureLeft,top+90);
+   g.lineTo(center,top+45);g.lineTo(figureLeft+figureWidth,top+90);g.closePath();g.fill();
+   dot(center+figureWidth*0.15,top+90*brightnessCenter,11,C.amber);
+   T('明るさと色',center,slot.top+172,14,C.mut,'center');
+  }else if(index===1){
+   for(var receptor=0;receptor<12;receptor++){
+    var distance=(receptor/11-brightnessCenter)/0.16,response=Math.exp(-distance*distance);
+    rr(center-22,top+receptor*7.2,44,5,1,response>0.38?C.amber:C.line,0.5+response*0.5);
+   }
+   M('3,335',center,slot.top+144,20,C.amber,'center');
+   paragraph('画素を入力に変換',center,slot.top+172,slot.width,14,C.mut,'center');
+  }else if(index===2){
+   var random=mk(11),activity=gain<0.28?0.004:gain<0.62?0.1:0.78;
+   for(var neuron=0;neuron<240;neuron++){
+    var angle=random()*6.2832,radius=Math.sqrt(random()),active=((neuron*2654435761)>>>0)/4294967296<activity+Math.sin(lt*4+neuron)*0.03;
+    dot(center+Math.cos(angle)*radius*figureWidth/2,top+45+Math.sin(angle)*radius*45,active?2.4:1.5,active?C.verm:C.str2);
+   }
+   M('166,700',center,slot.top+144,20,C.ink,'center');
+   T('実測の配線',center,slot.top+172,14,C.mut,'center');
+  }else{
+   dot(slot.left+4,top+10,4,C.teal);M('DNp20',center,top+10,14,C.ink,'center');
+   T('旋回',center,top+32,14,C.teal,'center');
+   dot(slot.left+4,top+64,4,C.teal);M('DNpe017',center,top+64,14,C.ink,'center');
+   T('前進・発砲',center,top+86,14,C.teal,'center');
+   T('作者の選択',center,slot.top+172,14,C.dim,'center');
+  }
+  g.restore();
+  if(index<3&&(!compact||index%2===0)&&lt>starts[index+1])arrow(slot.left+slot.width+2,top+45,slot.left+slot.width+14,top+45,C.dim,0.7);
+ });
+ if(lt>=17){
+  var left=40,width=W-80,top=compact?552:396;
+  T('結合の強さは未確定',W/2,top-26,15,C.mut,'center',500);
+  rr(left,top,width,6,3,C.line);rr(left+width*0.28,top,width*0.34,6,0,C.teal,0.55);
+  dot(left+width*gain,top+3,8,C.ink);
+  T('沈黙',left,top+30,14,gain<0.28?C.ink:C.dim,'left',500);
+  T('活動',W/2,top+30,14,gain>=0.28&&gain<0.62?C.teal:C.dim,'center',500);
+  T('暴走',left+width,top+30,14,gain>=0.62?C.verm:C.dim,'right',500);
+  if(lt>23)T('未知数は約2,550万個',W/2,top+66,16,C.ink,'center',700);
+ }
+}
+
+// Chapter G: two ways into the mushroom body. Three glomeruli, three PNs each.
+// Real odours reach the PNs through their glomerulus, so the PNs of one
+// glomerulus carry one signal; driving the PNs directly gives each its own.
+var GLOM=[{c:'amber',v:0.95},{c:'rose',v:0.35},{c:'teal',v:0.7}];
+function sG(lt){
+ head('G','入力の入れ方');
+ var left=compact?24:Math.max(24,W/2-330),width=W-2*left;
+ var x0=left+width*0.06,x1=left+width*0.3,x2=left+width*0.62,x3=left+width*0.84;
+ var rowY=function(i){return 196+i*96;},pnY=function(i,j){return rowY(i)+(j-1)*24;};
+ var direct=lt>=11&&lt<19,fold=ss(19,19.8,lt),alpha=1-fold;
+ if(lt<19){
+  g.save();g.globalAlpha=ss(0,0.6,lt)*(1-ss(18.4,19,lt));
+  paragraph(direct?'投射ニューロンに直接入れる':'本物のにおい',W/2,92,W-48,18,C.ink,'center',700);
+  paragraph(direct?'1本ずつ、別々の値':'糸球体でまとめられてから入る',W/2,124,W-48,14,C.mut,'center');
+  var heads=[[x0,direct?'画像など':'受容体'],[x1,'糸球体'],[x2,'投射ニューロン'],[x3,'キノコ体']];
+  heads.forEach(function(h){T(h[1],h[0],160,compact?12:14,C.dim,'center',500);});
+  var rand=mk(7);
+  GLOM.forEach(function(gl,i){
+   var col=C[gl.c],on=direct?0.25:1;
+   // source -> glomerulus (real) or source -> each PN directly
+   if(!direct){
+    dot(x0,rowY(i),9,col,gl.v);
+    ln(x0+10,rowY(i),x1-18,rowY(i),col,2,0.7);
+   }
+   dot(x1,rowY(i),16,col,direct?0.18:0.35+0.65*gl.v);
+   sell(x1,rowY(i),16,16,0,direct?C.dim:col,1.5,direct?0.4:1);
+   for(var j=0;j<3;j++){
+    var v=direct?rand():gl.v,pc=direct?[C.amber,C.rose,C.teal,C.blue][Math.floor(rand()*4)]:col;
+    if(direct){
+     var px=x0-18+((i*3+j)%3)*14,py=rowY(1)-26+Math.floor((i*3+j)/3)*14;
+     rr(px,py,12,12,2,'#E4E8E2',0.25+0.75*v);
+     ln(px+12,py+6,x2-4,pnY(i,j),pc,1.3,0.55);
+    }else ln(x1+16,rowY(i),x2-4,pnY(i,j),col,2,0.35+0.65*on);
+    rr(x2-4,pnY(i,j)-4,(x3-x2)*0.55,8,3,pc,0.3+0.7*v);
+    ln(x2+(x3-x2)*0.55,pnY(i,j),x3-24,196+96,pc,1,0.25);
+   }
+  });
+  kcField(x3-22,196+96-60,6,10,12,litFor(direct?91:23,9,60),1,C.rose);
+  if(lt>(direct?15:6.5))paragraph(direct?'同じ糸球体の3本が、バラバラの信号を運ぶ':'同じ糸球体の3本は、同じ信号を運ぶ',W/2,520,W-48,16,direct?C.verm:C.ink,'center',700);
+  g.restore();
+ }else if(lt<28){
+  var local=lt-19;
+  g.save();g.globalAlpha=ss(19,19.6,lt)*(1-ss(27.4,28,lt));
+  paragraph('入力の自由度が水増しされる',W/2,92,W-48,18,C.ink,'center',700);
+  paragraph('右半球のキノコ体に入る、独立なチャンネルの数',W/2,124,W-48,14,C.mut,'center');
+  var bars=[['本物のにおい（糸球体）',50,C.teal,0.4],['直接入れる（投射ニューロン）',162,C.verm,1.6]],bw=width-150;
+  bars.forEach(function(b,i){
+   if(local<b[3])return;
+   var y=196+i*92,grow=ss(b[3],b[3]+1.2,local);
+   T(b[0],left,y,15,b[2],'left',700);
+   rr(left,y+18,bw,18,3,'#2B3338');rr(left,y+18,bw*b[1]/162*grow,18,3,b[2]);
+   M('約'+Math.round(b[1]*grow),left+bw+14,y+27,18,C.ink,'left');
+  });
+  if(local>3.4)paragraph('すると、でたらめな配線の成績が実際より良く見える',W/2,420,W-48,16,C.ink,'center',700);
+  if(local>5.2)paragraph('このサイトの最初の版も、これで一度間違えた',W/2,462,W-48,14,C.mut,'center');
+  g.restore();
+ }else{
+  g.save();g.globalAlpha=ss(28,28.6,lt);
+  paragraph('配線図は答えではない。',W/2,220,W-48,compact?20:24,C.ink,'center',700);
+  paragraph('が、答えを含む空間を狭める',W/2,compact?262:266,W-48,compact?20:24,C.ink,'center',700);
+  paragraph('このサイトでは、実在の化学物質を糸球体から入れている',W/2,360,W-48,14,C.mut,'center');
+  g.restore();
+ }
+}
+
+// The numbers below are this repository's own results: results/exp4_real_odors.json
+// (similarity preservation, saturation) and results/exp1_hash.json (KC edges per
+// glomerulus). Re-run the experiments and they need updating by hand.
+function sH(lt){
+ head('H','実測してみた');
+ var left=compact?24:Math.max(24,W/2-300),width=W-2*left;
+ function phase(a,b){return ss(a,a+0.6,lt)*(1-ss(b-0.5,b,lt));}
+ g.save();
+ if(lt<9){
+  g.globalAlpha=phase(0,9);
+  paragraph('似た匂いが、似たコードになるか',W/2,92,W-48,18,C.ink,'center',700);
+  paragraph('実在の匂い67種・全ペアの順位相関',W/2,124,W-48,14,C.mut,'center');
+  [['実測の配線',0.841,C.rose,0.8],['全部張り替え（次数は保存）',0.840,C.amber,2.4],['一様ランダム',0.9245,C.blue,4.2]]
+  .forEach(function(row,index){
+   if(lt<row[3])return;
+   var top=176+index*84,grow=ss(row[3],row[3]+1.2,lt);
+   T(row[0],left,top,15,row[2],'left',700);
+   M(row[1].toFixed(2),left+width,top,15,C.ink,'right');
+   rr(left,top+16,width,16,3,'#2B3338');
+   rr(left,top+16,width*row[1]*grow,16,3,row[2]);
+  });
+  if(lt>6.2)paragraph('どこがどこに繋がるかには、情報がない',W/2,452,W-48,17,C.ink,'center',700);
+ }else if(lt<18){
+  var local=lt-9,label=compact?72:92,barWidth=width-label-44,max=473;
+  g.globalAlpha=phase(9,18);
+  paragraph('入口ごとに、読まれ方が違う',W/2,92,W-48,18,C.ink,'center',700);
+  paragraph('糸球体ごとの、ケニヨン細胞への結合数',W/2,124,W-48,14,C.mut,'center');
+  T('上位',left+label,150,13,C.dim);
+  [['DC1',473],['DP1m',446],['VM5d',389],['DM1',387],['DM6',385]].forEach(function(row,index){
+   var top=176+index*26,length=barWidth*row[1]/max*ss(0.4+index*0.15,1.4+index*0.15,local);
+   M(row[0],left+label-10,top,13,C.mut,'right');
+   rr(left+label,top-7,length,14,2,C.amber);
+   M(String(row[1]),left+label+length+8,top,13,C.ink);
+  });
+  if(local>3.2){
+   T('下位',left+label,316,13,C.dim);
+   [['VP4',9],['VP1m+',8],['VP2+',5],['VP1l+VP3',3]].forEach(function(row,index){
+    var top=342+index*26,length=Math.max(2,barWidth*row[1]/max);
+    g.save();g.globalAlpha*=ss(3.2+index*0.15,3.8+index*0.15,local);
+    M(row[0],left+label-10,top,13,C.teal,'right');
+    rr(left+label,top-7,length,14,2,C.teal);
+    M(String(row[1]),left+label+length+8,top,13,C.ink);
+    g.restore();
+   });
+   if(local>3.8)T('温度・湿度',left+label+64,342+1.5*26,14,C.teal,'left',700);
+  }
+  if(local>5.5)paragraph('温度と湿度の入口は、ほとんど読まれていない',W/2,466,W-48,17,C.ink,'center',700);
+ }else{
+  var later=lt-18,steps=['5件','10件','20件'];
+  g.globalAlpha=ss(18,18.6,lt);
+  paragraph(compact?'容量は、区画の大きさで決まる':'覚えられる数は、区画の大きさで決まる',W/2,92,W-48,18,C.ink,'center',700);
+  paragraph('覚えさせた数ごとの、まだ区別できる割合',W/2,124,W-48,14,C.mut,'center');
+  [['MBON11 — 1,713個のKCを読む',[1.00,0.96,0.75],C.rose,0.4],['MBON19 — 161個のKCを読む',[0.35,0.19,0.14],C.teal,2.6]]
+  .forEach(function(group,index){
+   if(later<group[3])return;
+   var top=170+index*134,label=48,barWidth=width-label-52;
+   g.save();g.globalAlpha*=ss(group[3],group[3]+0.6,later);
+   T(group[0],left,top,15,group[2],'left',700);
+   group[1].forEach(function(value,step){
+    var y=top+32+step*28,grow=ss(group[3]+0.3+step*0.3,group[3]+1.3+step*0.3,later);
+    M(steps[step],left+label-10,y,13,C.mut,'right');
+    rr(left+label,y-7,barWidth,14,2,'#2B3338');
+    rr(left+label,y-7,barWidth*value*grow,14,2,group[2]);
+    M(Math.round(value*100*grow)+'%',left+width,y,13,C.ink,'right');
+   });
+   g.restore();
+  });
+  if(later>5.5)paragraph('上のナビの「おつかい」と「脳の中を見る」で、自分で試せます',W/2,466,W-48,16,C.ink,'center',700);
+  paragraph('実在の匂い67種・500通りの順番の平均',W/2,H-28,W-48,13,C.dim,'center');
+ }
+ g.restore();
+}
+
+function draw(t){
+ g.globalAlpha=1;
+ g.fillStyle=C.bg;g.fillRect(0,0,W,H);
+ var s=SC[0];
+ for(var k=0;k<SC.length;k++)if(t>=SC[k].s)s=SC[k];
+ var lt=t-s.s;
+ if(s.k==='A')sA(lt);else if(s.k==='B')sB(lt);else if(s.k==='C')sC(lt);
+ else if(s.k==='D')sD(lt);else if(s.k==='E')sE(lt);else if(s.k==='F')sF(lt);else if(s.k==='G')sG(lt);else sH(lt);
+ var fi=ss(0,0.5,lt),fo=1-ss(s.d-0.45,s.d,lt);
+ var fade=1-Math.min(fi,fo);
+ if(fade>0.002){g.save();g.globalAlpha=fade;g.fillStyle=C.bg;g.fillRect(0,0,W,H);g.restore();}
+}
+
+var chips=document.getElementById('chips');
+SC.forEach(function(s,i){var b=document.createElement('button');b.className='chip';
+ b.textContent=s.k+'　'+s.t;b.setAttribute('aria-current',i===0?'true':'false');
+ b.addEventListener('click',function(){seek(s.s+1);});chips.appendChild(b);});
+
+var t=1,playing=false,last=0,raf=null,curCap=-1;
+var pp=document.getElementById('pp'),fill=document.getElementById('fill'),
+ track=document.getElementById('track'),cnow=document.getElementById('cnow'),
+ caph=document.getElementById('caph'),capb=document.getElementById('capb');
+SC.forEach(function(s){if(s.s===0)return;var d=document.createElement('div');
+ d.className='tick';d.style.left=(s.s/TOT*100)+'%';track.appendChild(d);});
+
+function fmt(x){var m=Math.floor(x/60),ss2=Math.floor(x%60);return m+':'+(ss2<10?'0':'')+ss2;}
+function sync(){
+ fill.style.width=(t/TOT*100)+'%';cnow.textContent=fmt(t);
+ track.setAttribute('aria-valuenow',Math.round(t));
+ var ci=0;for(var i=0;i<CAPS.length;i++)if(t>=CAPS[i][0])ci=i;
+ if(ci!==curCap){curCap=ci;caph.textContent=CAPS[ci][1];capb.textContent=CAPS[ci][2];}
+ var ai=0;for(i=0;i<SC.length;i++)if(t>=SC[i].s)ai=i;
+ var bs=chips.children;for(i=0;i<bs.length;i++)bs[i].setAttribute('aria-current',i===ai?'true':'false');
+}
+function seek(x){t=Math.max(0,Math.min(TOT-0.01,x));draw(t);sync();}
+function loop(ts){
+ if(!last)last=ts;var dt=(ts-last)/1000;last=ts;
+ if(dt<0.5)t+=dt;
+ if(t>=TOT){t=0;}
+ draw(t);sync();
+ if(playing)raf=requestAnimationFrame(loop);
+}
+function setPlay(v){
+ playing=v;pp.innerHTML=v?'&#10074;&#10074;':'&#9654;';
+ pp.setAttribute('aria-label',v?'一時停止':'再生');
+ if(v){last=0;raf=requestAnimationFrame(loop);}else if(raf)cancelAnimationFrame(raf);
+}
+pp.addEventListener('click',function(){setPlay(!playing);});
+function fromEv(e){var r=track.getBoundingClientRect();
+ var cx=(e.touches?e.touches[0].clientX:e.clientX);seek((cx-r.left)/r.width*TOT);}
+track.addEventListener('pointerdown',function(e){track.setPointerCapture(e.pointerId);fromEv(e);
+ var mv=function(ev){fromEv(ev);};
+ var up=function(){track.removeEventListener('pointermove',mv);track.removeEventListener('pointerup',up);};
+ track.addEventListener('pointermove',mv);track.addEventListener('pointerup',up);});
+track.addEventListener('keydown',function(e){
+ if(e.key==='ArrowRight'){seek(t+5);e.preventDefault();}
+ else if(e.key==='ArrowLeft'){seek(t-5);e.preventDefault();}
+ else if(e.key===' '||e.key==='Enter'){setPlay(!playing);e.preventDefault();}});
+
+function resizeStage(){
+ W=Math.round(cv.getBoundingClientRect().width);compact=W<600;H=compact?640:560;
+ dpr=Math.min(2,window.devicePixelRatio||1);
+ cv.style.height=H+'px';cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+ g.setTransform(dpr,0,0,dpr,0,0);draw(t);
+}
+resizeStage();sync();
+new ResizeObserver(function(){
+ if(Math.round(cv.getBoundingClientRect().width)!==W)resizeStage();
+}).observe(cv);
+document.fonts.ready.then(function(){draw(t);});
+var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!rm)setTimeout(function(){setPlay(true);},700);
+})();
+</script>
+</html>

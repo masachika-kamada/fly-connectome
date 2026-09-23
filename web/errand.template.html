@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ハエのおつかい</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F1F3F0;--paper:#FAFBF9;--sunk:#E9ECE8;--ink:#191D1F;--ink-2:#4B5257;--ink-3:#7C858B;
+  --rule:#D7DBD6;--rule-2:#C3C9C2;--hot:#C04326;--cool:#26775A;--accent:#B0436B;
+  --floor:#F6F4EE;--shelf:#E4DFD2;--plume:120,140,170;--want:38,119,90;--avoid:192,67,38;--fly:#2A2522;
+  --f-disp:"Zen Old Mincho",ui-serif,Georgia,serif;
+  --f-body:"Zen Kaku Gothic New",ui-sans-serif,system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#121517;--paper:#181C1F;--sunk:#22272A;--ink:#E8EBE8;--ink-2:#AEB6BB;--ink-3:#7F888E;
+  --rule:#2A3034;--rule-2:#3A4145;--hot:#E9765A;--cool:#4FB58C;--accent:#DE7CA0;
+  --floor:#1C2023;--shelf:#2C3236;--plume:150,170,200;--want:79,181,140;--avoid:233,118,90;--fly:#E8E2D8;}}
+:root[data-theme="dark"]{
+  --ground:#121517;--paper:#181C1F;--sunk:#22272A;--ink:#E8EBE8;--ink-2:#AEB6BB;--ink-3:#7F888E;
+  --rule:#2A3034;--rule-2:#3A4145;--hot:#E9765A;--cool:#4FB58C;--accent:#DE7CA0;
+  --floor:#1C2023;--shelf:#2C3236;--plume:150,170,200;--want:79,181,140;--avoid:233,118,90;--fly:#E8E2D8;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-body);line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:36px 64px}
+h1{font-family:var(--f-disp);font-weight:900;font-size:clamp(27px,5vw,42px);line-height:1.25;margin:0 0 14px}
+.lede{font-size:15px;color:var(--ink-2);max-width:70ch;margin:0 0 10px}
+.hint{font-size:13px;color:var(--ink-3);margin:0 0 22px}
+.hint b{color:var(--ink-2)}
+.grp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lab{font-size:13px;color:var(--ink-2)}
+.order{padding:14px 16px;background:var(--paper);border:1px solid var(--rule);border-radius:8px;margin:0 0 12px}
+.order-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ask{font-size:15px;font-weight:700}
+.order select{font-size:14px;padding:8px 12px}
+.order .go{font-size:14px;padding:8px 16px}
+.status{margin:10px 0 0;font-size:13px;color:var(--ink-2)}
+.status b{color:var(--ink)}
+.extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin:0 0 14px}
+.extra{padding:12px 14px;background:var(--paper);border:1px solid var(--rule);border-radius:8px}
+.extra h2{font-size:13.5px;margin:0 0 3px}
+.extra p{font-size:12px;color:var(--ink-3);margin:0 0 9px;line-height:1.65;min-height:3.3em}
+.chk{display:block;font-size:12.5px;color:var(--ink-2);margin:9px 0 0}
+.side-h{font-size:13.5px;margin:0 0 4px}
+select,button{font-family:var(--f-body);font-size:13px;color:var(--ink);background:var(--paper);border:1px solid var(--rule-2);border-radius:6px;padding:7px 12px;cursor:pointer}
+button:hover,select:hover{border-color:var(--ink-3)}
+button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.go{background:var(--ink);color:var(--ground);border-color:var(--ink);font-weight:700}
+button.punish{border-color:var(--hot);color:var(--hot)}
+.seg{display:inline-flex;border:1px solid var(--rule-2);border-radius:6px;overflow:hidden}
+.seg button{border:none;border-radius:0;padding:7px 11px;background:transparent;color:var(--ink-2)}
+.seg button+button{border-left:1px solid var(--rule-2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--ground)}
+.cols{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:16px;align-items:start}
+@media(max-width:940px){.cols{grid-template-columns:1fr}}
+.panel{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:14px 15px;min-width:0}
+.stage{padding:0;overflow:hidden;position:relative}
+canvas{display:block;width:100%;height:auto;touch-action:manipulation}
+.busy{position:absolute;inset:0;display:grid;place-items:center;background:rgba(128,128,128,.12);font-size:13px;color:var(--ink-2)}
+.busy[hidden]{display:none}
+.legend{display:flex;gap:14px;flex-wrap:wrap;padding:8px 12px;border-top:1px solid var(--rule);font-size:11.5px;color:var(--ink-3)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.ph{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;color:var(--ink-3);margin:0 0 3px}
+.psub{font-size:12px;color:var(--ink-3);margin:0 0 10px;line-height:1.6}
+.wants{display:grid;gap:3px;margin:0 0 6px}
+.wr{display:grid;grid-template-columns:7.5em 1fr 3.2em;align-items:center;gap:8px;font-size:12px}
+.wr .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wr .v{font-family:var(--f-mono);font-size:11px;color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
+.wt{position:relative;height:9px;background:var(--sunk);border-radius:2px}
+.wt .z{position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--rule-2)}
+.wt .f{position:absolute;top:0;bottom:0;border-radius:2px}
+.wt .mk{position:absolute;top:-3px;bottom:-3px;width:0;border-left:1px dashed var(--ink-3)}
+.marks{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-3);margin:2px 0 0}
+.warn{margin:8px 0 0;padding:9px 11px;border-radius:6px;background:rgba(var(--avoid),.12);color:var(--ink);font-size:12.5px;line-height:1.7}
+.log{margin:14px 0 0;padding:0;list-style:none;font-size:12.5px}
+.log li{padding:5px 0;border-top:1px solid var(--rule)}
+.log .ok{color:var(--cool);font-weight:700}
+.log .ng{color:var(--hot);font-weight:700}
+.tally{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--ink-2);margin:8px 0 0}
+.explain{margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.explain div{background:var(--paper);padding:16px 18px}
+.explain h2{font-size:14px;margin:0 0 6px}
+.explain p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.8}
+.explain .tag{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;color:var(--ink-3);display:block;margin:0 0 4px}
+.foot{margin-top:28px;padding-top:16px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--ink-3);line-height:1.9}
+.foot a{color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<nav class="sitenav">
+  <a href="./" data-nav="errand">おつかい</a>
+  <a href="brain.html" data-nav="brain">脳の中を見る</a>
+  <a href="explainer.html" data-nav="explainer">解説</a>
+  <a href="figures.html" data-nav="figures">実験結果</a>
+  <span class="sitenav-src">MaleCNS v1.0 &times; DoOR 2.0</span>
+</nav>
+<style>
+.sitenav{display:flex;align-items:center;gap:4px;max-width:1180px;margin:0 auto;
+  padding:14px 20px 0;font-family:"Zen Kaku Gothic New",ui-sans-serif,system-ui,sans-serif}
+.sitenav a{font-size:13px;color:var(--ink-3,#7C858B);text-decoration:none;padding:6px 12px;border-radius:6px}
+.sitenav a:hover{color:var(--ink,#191D1F);background:rgba(128,128,128,.12)}
+.sitenav a[aria-current="page"]{color:var(--ink,#191D1F);font-weight:700;background:rgba(128,128,128,.14)}
+.sitenav-src{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+  letter-spacing:.1em;color:var(--ink-3,#7C858B)}
+@media(max-width:560px){.sitenav-src{display:none}}
+</style>
+<script>
+(function(){
+  // Relative links and file names, so the site works from any base path
+  // (GitHub Pages serves it under /fly-connectome/). The older pretty URLs
+  // of the local server still map to the same pages.
+  var page = location.pathname.split('/').pop().replace(/\.html$/, '');
+  var key = { '': 'errand', index: 'errand', errand: 'errand', trainer: 'brain' }[page] || page;
+  var a = document.querySelector('.sitenav a[data-nav="' + key + '"]');
+  if (a) a.setAttribute('aria-current','page');
+})();
+</script>
+
+<div class="wrap">
+<h1>ハエのおつかい</h1>
+<p class="lede">商品の匂いを一度嗅がせて、砂糖をあげる。それだけで、ハエは店の中からその商品を探して持ってきます。ときどき、似た匂いの別の商品を持ってきます。匂いは実在の化学物質、脳の配線は電子顕微鏡で数えた実物。取り違えも含めて、計算の結果です。</p>
+<p class="hint">取り違えやすいのは <b>🍌 バナナ</b>（🍶 日本酒と）と <b>🍮 杏仁豆腐</b>（🍷 ワインと）。どちらも香りの成分がかぶっている。</p>
+
+<div class="order">
+  <div class="order-row">
+    <label class="ask" for="item">何を買ってきてもらう？</label>
+    <select id="item"></select>
+    <button class="go" id="ten">10匹おつかいに出す</button>
+    <button id="one">1匹だけ出す</button>
+  </div>
+  <p class="status" id="status"></p>
+  <p class="warn" id="warn" hidden></p>
+</div>
+
+<div class="extras">
+  <section class="extra">
+    <h2>間違いを直してみる</h2>
+    <p>取り違えて持ってきた品の匂いを、罰と一緒に嗅がせる。ハエはその匂いを避けるようになる。</p>
+    <div class="grp">
+      <select id="avoid" aria-label="罰と一緒に嗅がせる品"></select>
+      <button class="punish" id="punish">罰と一緒に嗅がせる</button>
+      <button id="unpunish">罰を取り消す</button>
+    </div>
+  </section>
+  <section class="extra">
+    <h2>脳を取り替えて比べる</h2>
+    <p id="wdesc"></p>
+    <span class="seg" id="wiring" role="group" aria-label="使う脳"></span>
+  </section>
+  <section class="extra">
+    <h2>見え方</h2>
+    <div class="grp">
+      <button id="shuffle">商品の置き場所を変える</button>
+      <span class="seg" id="speed" role="group" aria-label="再生の速さ"></span>
+    </div>
+    <label class="chk"><input type="checkbox" id="showWant" checked> ハエが行きたがる空気を緑で表示</label>
+  </section>
+</div>
+
+<div class="cols">
+  <div class="panel stage">
+    <canvas id="shop" width="1000" height="640" role="img" aria-label="店内を上から見た図。棚に14の商品が並び、奥の空調から入口へ風が流れる。ハエが歩いた跡が線で描かれる"></canvas>
+    <div class="busy" id="busy" hidden>ハエの気持ちを計算中…</div>
+    <div class="legend">
+      <span><i style="background:rgba(var(--plume),.45)"></i>匂いの筋（風で入口側へ流れる）</span>
+      <span><i style="background:rgba(var(--want),.55)"></i>ハエが行きたい空気</span>
+      <span><i style="background:rgba(var(--avoid),.55)"></i>避けたい空気</span>
+    </div>
+  </div>
+  <div class="panel">
+    <h2 class="side-h">ハエがいま、各商品をどれくらい欲しがっているか</h2>
+    <p class="psub">キノコ体の出口の変化から計算した「欲しさ」。左の破線を超える匂いはたどり、右の破線を超える品は手に取る。</p>
+    <div class="wants" id="wants"></div>
+    <div class="marks"><span>避けたい</span><span>どうでもいい</span><span>欲しい</span></div>
+    <ul class="log" id="log"></ul>
+    <div class="tally" id="tally"></div>
+  </div>
+</div>
+
+<div class="explain">
+  <div><span class="tag">NOSE → BRAIN</span><h2>匂いの入り方は本物</h2><p>商品の香りは代表的な成分（バナナなら酢酸イソペンチル）で近似。その成分に対する受容体の反応は DoOR 2.0 の実測値で、糸球体から投射ニューロン、ケニヨン細胞までは MaleCNS v1.0 の実測の配線を通る。</p></div>
+  <div><span class="tag">LEARNING</span><h2>覚え方も本物</h2><p>砂糖は報酬の区画、罰は罰の区画にドーパミンを届け、そのとき光っていたケニヨン細胞から出口への結合を弱めるだけ。1回嗅がせれば覚える。似た匂いの商品は細胞を共有しているので、一緒に「欲しく」なる。</p></div>
+  <div><span class="tag">WALKING</span><h2>歩き方は仮定</h2><p>店の奥の空調から入口へ風が流れ、匂いは風下へ筋になって伸びる。ハエは欲しい匂いを感じると風上へ進み、左右の触角で匂いの濃い側へ寄る。見失うと左右を探す。棚の前では、その商品自体の匂いで手に取るかを決める。歩くハエで知られている行動を、最小限に写したもの。</p></div>
+  <div><span class="tag">WHAT'S MISSING</span><h2>生まれつきの好みはない</h2><p>本物のハエはお酢や果物に生まれつき寄っていくが、それを担う側角はモデルに入っていない。何も教えないハエは、どの商品にも興味を示さない。</p></div>
+</div>
+
+<p class="foot" id="foot"></p>
+</div>
+
+<script>window.ERRAND_DATA = /*__DATA__*/ null;</script>
+<script>/*__CORE__*/</script>
+<script>
+(function(){
+var D = window.ERRAND_DATA, E = window.ErrandCore;
+if (!D || !E) { document.getElementById('busy').hidden = false; document.getElementById('busy').textContent = 'data missing'; return; }
+
+var P = E.PARAMS, SHOP = E.SHOP, SLOTS = E.SLOTS, N = D.products.length;
+// What each brain is, in the words the page shows under the switch.
+var WIRINGS = [
+  {key:'real', label:'本物', desc:'いまのハエの脳は、電子顕微鏡で数えた本物の配線。ほかの脳に取り替えて、おつかいの成績が変わるか比べられる。'},
+  {key:'swap', label:'シャッフル', desc:'つなぎ先をシャッフルした脳。どの細胞も、つながる本数は本物と同じ。つなぎ先そのものに意味があるなら、成績が落ちる。'},
+  {key:'uniform', label:'でたらめ', desc:'完全にでたらめにつないだ脳。本数の偏りも消える。'}
+];
+var SPEEDS = [{k:2, label:'ゆっくり'}, {k:8, label:'速く'}];
+function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function label(i){ return D.products[i].icon + ' ' + D.products[i].name; }
+
+var state = {
+  wiring: 'real', speed: 2, lessons: [{item: 3, kind: 'reward'}], layout: E.shuffled(N, E.mulberry32(7)),
+  brains: {}, field: null, flies: [], errand: 3, tally: null, layoutSeed: 7, flySeed: 1
+};
+function brain(){
+  var b = state.brains[state.wiring] || (state.brains[state.wiring] = new E.Brain(D, state.wiring));
+  b.forget();
+  state.lessons.forEach(function(l){ b.teach(D.products[l.item].glom, l.kind); });
+  return b;
+}
+
+// ---- controls
+var item = document.getElementById('item'), avoid = document.getElementById('avoid');
+D.products.forEach(function(p, i){
+  [item, avoid].forEach(function(sel){ var o = document.createElement('option'); o.value = i; o.textContent = label(i); sel.appendChild(o); });
+});
+item.value = 3; avoid.value = 4;
+function seg(id, list, key, onPick){
+  var box = document.getElementById(id), btns = [];
+  list.forEach(function(it){
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = it.label;
+    b.addEventListener('click', function(){ onPick(it); sync(); });
+    box.appendChild(b); btns.push([b, it]);
+  });
+  function sync(){ btns.forEach(function(p){ p[0].setAttribute('aria-pressed', p[1][key] === state[key === 'k' ? 'speed' : 'wiring'] ? 'true' : 'false'); }); }
+  sync();
+}
+seg('wiring', WIRINGS, 'key', function(it){ state.wiring = it.key; describeWiring(); rebuild(); });
+function describeWiring(){
+  document.getElementById('wdesc').textContent = WIRINGS.filter(function(w){ return w.key === state.wiring; })[0].desc;
+}
+describeWiring();
+seg('speed', SPEEDS, 'k', function(it){ state.speed = it.k; });
+
+// Choosing the errand is teaching it: the fly smells the product once with
+// sugar. A new errand is a new fly, so earlier lessons go.
+item.addEventListener('change', function(){
+  state.errand = +item.value; state.lessons = [{item: state.errand, kind: 'reward'}]; rebuild();
+});
+document.getElementById('punish').addEventListener('click', function(){
+  state.lessons.push({item: +avoid.value, kind: 'punish'}); rebuild();
+});
+document.getElementById('unpunish').addEventListener('click', function(){
+  state.lessons = state.lessons.filter(function(l){ return l.kind !== 'punish'; }); rebuild();
+});
+document.getElementById('shuffle').addEventListener('click', function(){
+  state.layoutSeed++; state.layout = E.shuffled(N, E.mulberry32(state.layoutSeed)); rebuild();
+});
+document.getElementById('one').addEventListener('click', function(){ release(1); });
+document.getElementById('ten').addEventListener('click', function(){ release(10); });
+document.getElementById('showWant').addEventListener('change', function(){ paintAir(); });
+
+// ---- recompute what the fly makes of the shop
+var busy = document.getElementById('busy'), pending = null;
+function rebuild(then){
+  state.flies = []; state.tally = null;
+  busy.hidden = false;
+  clearTimeout(pending);
+  pending = setTimeout(function(){
+    var b = brain();
+    state.field = new E.Field(b, state.layout);
+    renderWants(b); renderLessons(); paintAir(); renderTally();
+    busy.hidden = true;
+    if (then) then();
+  }, 30);
+}
+
+function renderLessons(){
+  var bad = state.lessons.filter(function(l){ return l.kind === 'punish'; })
+    .map(function(l){ return '<b>' + esc(label(l.item)) + '</b>'; })
+    .filter(function(v, i, a){ return a.indexOf(v) === i; });
+  document.getElementById('status').innerHTML = 'ハエは <b>' + esc(label(state.errand)) +
+    '</b> の匂いを、砂糖と一緒に1回嗅いで覚えている。' +
+    (bad.length ? bad.join('、') + ' の匂いは罰と一緒に嗅いだので避ける。' : '') +
+    (state.wiring === 'real' ? '' : '脳は「' + WIRINGS.filter(function(w){ return w.key === state.wiring; })[0].label + '」に取り替えてある。');
+}
+
+function renderWants(b){
+  var vals = D.products.map(function(p){ return b.want(p.glom); });
+  var warn = document.getElementById('warn');
+  if (state.errand != null && vals[state.errand] <= P.want){
+    warn.hidden = false;
+    warn.innerHTML = 'このままでは何も買ってきません。' + esc(label(state.errand)) + ' の欲しさが ' + vals[state.errand].toFixed(2) +
+      ' まで下がり、手に取る基準（' + P.want + '）に届かない。' +
+      (punished() ? blame(state.errand) + '。「罰を取り消す」で元に戻る。' : '');
+  } else warn.hidden = true;
+  var max = 2.6, order = vals.map(function(v, i){ return i; }).sort(function(a, c){ return vals[c] - vals[a]; });
+  var box = document.getElementById('wants');
+  var mk = function(v){ return 50 + 50 * v / max; };
+  box.innerHTML = order.map(function(i){
+    var v = vals[i], l = v >= 0 ? 50 : mk(v), w = Math.abs(mk(v) - 50);
+    var col = v >= P.want ? 'var(--cool)' : v >= P.track ? 'rgba(var(--want),.55)' : v < 0 ? 'var(--hot)' : 'var(--rule-2)';
+    return '<div class="wr"><span class="nm">' + esc(label(i)) + '</span><span class="wt"><span class="z"></span>' +
+      '<span class="mk" style="left:' + mk(P.track) + '%"></span><span class="mk" style="left:' + mk(P.want) + '%"></span>' +
+      '<span class="f" style="left:' + l + '%;width:' + w + '%;background:' + col + '"></span></span>' +
+      '<span class="v">' + v.toFixed(2) + '</span></div>';
+  }).join('');
+}
+
+// ---- drawing
+var cv = document.getElementById('shop'), g = cv.getContext('2d');
+var air = document.createElement('canvas'), ag = air.getContext('2d');
+var palette = {};
+function css(name){
+  if (!(name in palette)) palette[name] = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return palette[name];
+}
+if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){ palette = {}; paintAir(); });
+function paintAir(){
+  var f = state.field; if (!f) return;
+  air.width = f.nx; air.height = f.ny;
+  var img = ag.createImageData(f.nx, f.ny), px = img.data;
+  var plume = css('--plume').split(',').map(Number), want = css('--want').split(',').map(Number), avoidC = css('--avoid').split(',').map(Number);
+  var show = document.getElementById('showWant').checked;
+  for (var p = 0; p < f.nx * f.ny; p++){
+    var I = Math.min(1, f.intensity[p]), v = f.want[p], c = plume, a = I * 0.35;
+    // Tint by how much the fly wants this air, fading in from nothing at zero,
+    // so the picture has no edge the fly itself does not have.
+    var k = show && I > P.sense ? Math.min(1, Math.abs(v) / 2.5) : 0;
+    if (k > 0){ c = v > 0 ? want : avoidC; a = Math.min(0.8, I * (0.35 + 0.6 * k)); }
+    if (k > 0){ var m = Math.min(1, k * 1.6); c = [plume[0] + (c[0] - plume[0]) * m, plume[1] + (c[1] - plume[1]) * m, plume[2] + (c[2] - plume[2]) * m]; }
+    px[p * 4] = c[0]; px[p * 4 + 1] = c[1]; px[p * 4 + 2] = c[2]; px[p * 4 + 3] = Math.round(255 * a);
+  }
+  ag.putImageData(img, 0, 0);
+}
+
+function resize(){
+  var r = cv.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.width * SHOP.h / SHOP.w * dpr);
+}
+var EMOJI = '"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif';
+function draw(){
+  var s = cv.width / SHOP.w, small = cv.getBoundingClientRect().width < 560;
+  g.setTransform(s, 0, 0, s, 0, 0);
+  g.fillStyle = css('--floor'); g.fillRect(0, 0, SHOP.w, SHOP.h);
+  // air conditioning and wind
+  g.fillStyle = css('--sunk'); g.fillRect(0, 0, SHOP.w, 26);
+  g.fillStyle = css('--ink-3'); g.font = '500 15px "Zen Kaku Gothic New",sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText('空調  ↓ 風 ↓', SHOP.w / 2, 13);
+  if (state.field){ g.imageSmoothingEnabled = true; g.drawImage(air, 0, 0, (state.field.nx - 1) * P.cell, (state.field.ny - 1) * P.cell); }
+  // entrance
+  g.fillStyle = css('--sunk'); g.fillRect(SHOP.w / 2 - 70, SHOP.h - 10, 140, 10);
+  g.fillStyle = css('--ink-3'); g.fillText('入口', SHOP.w / 2, SHOP.h - 26);
+  // shelves
+  SLOTS.forEach(function(sl, k){
+    var p = D.products[state.layout[k]], errand = state.errand === state.layout[k];
+    g.fillStyle = css('--shelf'); g.beginPath(); g.roundRect ? g.roundRect(sl.x - 40, sl.y - 26, 80, 52, 8) : g.rect(sl.x - 40, sl.y - 26, 80, 52); g.fill();
+    if (errand){ g.strokeStyle = css('--cool'); g.lineWidth = 3; g.stroke(); }
+    // On a narrow screen the names would be a few pixels tall: show only the
+    // icon, larger, and let the side panel carry the names.
+    if (small){ g.font = '40px ' + EMOJI; g.fillText(p.icon, sl.x, sl.y); }
+    else {
+      g.font = '26px ' + EMOJI; g.fillText(p.icon, sl.x, sl.y - 5);
+      g.fillStyle = css('--ink-2'); g.font = '500 13px "Zen Kaku Gothic New",sans-serif'; g.fillText(p.name, sl.x, sl.y + 17);
+    }
+  });
+  // flies
+  state.flies.forEach(function(f){
+    var t = f.trail;
+    if (t.length > 2){
+      g.strokeStyle = !f.done ? css('--accent') : f.bought == null ? css('--ink-3')
+        : f.bought === state.errand ? css('--cool') : css('--hot');
+      g.globalAlpha = f.done ? 0.45 : 0.8; g.lineWidth = 1.6; g.beginPath(); g.moveTo(t[0], t[1]);
+      for (var i = 2; i < t.length; i += 2) g.lineTo(t[i], t[i + 1]);
+      g.stroke(); g.globalAlpha = 1;
+    }
+    drawFly(f.x, f.y, f.heading);
+    if (f.bought != null){ g.font = (small ? '34px ' : '20px ') + EMOJI; g.fillText(D.products[f.bought].icon, f.x + 16, f.y - 16); }
+  });
+}
+function drawFly(x, y, h){
+  g.save(); g.translate(x, y); g.rotate(h + Math.PI / 2);
+  g.fillStyle = 'rgba(180,200,215,.55)';
+  g.beginPath(); g.ellipse(-6, 3, 4, 9, -0.4, 0, 6.2832); g.fill();
+  g.beginPath(); g.ellipse(6, 3, 4, 9, 0.4, 0, 6.2832); g.fill();
+  g.fillStyle = css('--fly');
+  g.beginPath(); g.ellipse(0, 4, 4, 7, 0, 0, 6.2832); g.fill();
+  g.beginPath(); g.arc(0, -5, 3.6, 0, 6.2832); g.fill();
+  g.fillStyle = '#B4352A'; g.beginPath(); g.arc(-2.4, -6, 1.6, 0, 6.2832); g.arc(2.4, -6, 1.6, 0, 6.2832); g.fill();
+  g.restore();
+}
+
+// ---- errands
+function release(n){
+  if (!state.field) return;
+  start(n);
+}
+function start(n){
+  state.flies = []; state.tally = n > 1 ? {} : null;
+  for (var i = 0; i < n; i++) state.flies.push(new E.Fly(E.mulberry32(state.flySeed++ * 7919)));
+  renderTally();
+}
+function addLog(html){
+  var li = document.createElement('li'); li.innerHTML = html;
+  var log = document.getElementById('log'); log.insertBefore(li, log.firstChild);
+  while (log.children.length > 6) log.removeChild(log.lastChild);
+}
+var logged = new Set();
+function tick(){
+  var running = false;
+  state.flies.forEach(function(f){
+    for (var i = 0; i < state.speed && !f.done; i++) f.step(state.field);
+    if (!f.done) running = true;
+    else if (!logged.has(f)){ logged.add(f); report(f); }
+  });
+  draw();
+  requestAnimationFrame(tick);
+}
+// Why a fly came back with nothing, in a few words, so an empty return says
+// something: it stood at the errand and turned it down, it followed a smell
+// but never reached the shelf, or it never smelled anything worth following.
+function emptyReason(f){
+  var want = state.errand;
+  if (want != null && state.field.item[want] <= P.want)
+    return {key: '頼んだ品を欲しがっていない', text: '頼んだ ' + esc(label(want)) + ' を、もう十分には欲しがっていない（欲しさ ' +
+      state.field.item[want].toFixed(2) + '、手に取る基準 ' + P.want + '）' + (punished() ? '。' + blame(want) : '')};
+  if (want != null && f.passed.indexOf(want) >= 0)
+    return {key: '棚まで行って見送り', text: '頼んだ ' + esc(label(want)) + ' の棚まで行ったが、手に取らなかった（欲しさ ' +
+      state.field.item[want].toFixed(2) + '、手に取る基準 ' + P.want + '）'};
+  if (f.surged === 0) return {key: '匂いに出会えず', text: '欲しいと思える匂いに一度も出会えず、店内をさまよって帰ってきた'};
+  return {key: '途中で見失い', text: '匂いをたどったが、頼んだ品の棚にはたどり着けなかった'};
+}
+function punished(){ return state.lessons.some(function(l){ return l.kind === 'punish'; }); }
+// The punished product that drags the errand down most: the one whose smell
+// the fly had come to want most, i.e. the one sharing most Kenyon cells.
+function blame(want){
+  var b = state.brains[state.wiring], best = null, most = -Infinity, saved = b.w;
+  b.forget(); b.teach(D.products[want].glom, 'reward');
+  state.lessons.forEach(function(l){
+    if (l.kind !== 'punish') return;
+    var v = b.want(D.products[l.item].glom);
+    if (v > most){ most = v; best = l.item; }
+  });
+  b.w = saved;
+  return best == null ? '' : esc(label(best)) + ' を罰したとき、光る細胞の多くが ' + esc(label(want)) + ' と同じだったので、一緒に嫌いになった';
+}
+function report(f){
+  var want = state.errand, got = f.bought, why = got == null ? emptyReason(f) : null;
+  if (state.tally){ var k = got == null ? 'なし（' + why.key + '）' : label(got); state.tally[k] = (state.tally[k] || 0) + 1; renderTally(); }
+  if (state.tally && state.flies.length > 1) return;
+  var msg;
+  if (got == null) msg = '<span class="ng">何も買わずに帰ってきた</span>: ' + why.text;
+  else if (want == null) msg = esc(label(got)) + ' を持ってきた';
+  else if (got === want) msg = '<span class="ok">頼んだ ' + esc(label(want)) + ' を持ってきた</span>';
+  else msg = '<span class="ng">' + esc(label(got)) + ' を持ってきた</span>（頼んだのは ' + esc(label(want)) + '）';
+  addLog(msg);
+}
+function renderTally(){
+  var box = document.getElementById('tally');
+  if (!state.tally){ box.innerHTML = ''; return; }
+  var done = Object.values(state.tally).reduce(function(s, v){ return s + v; }, 0);
+  box.innerHTML = '<b>10匹の結果（' + done + '/10 帰還）</b>' + Object.keys(state.tally).sort(function(a, b){ return state.tally[b] - state.tally[a]; })
+    .map(function(k){ return '<span>' + esc(k) + ' × ' + state.tally[k] + '</span>'; }).join('');
+}
+
+document.getElementById('foot').innerHTML =
+  '配線: ' + esc(D.source.connectome) + '（CC BY 4.0）右半球、ALPN ' + D.n_pn + '本 → ケニヨン細胞 ' + D.n_kc.toLocaleString() + '個 → MBON（罰の区画3・報酬の区画3）。<br>' +
+  '匂い: <a href="https://github.com/ropensci/DoOR.data">DoOR 2.0</a>（CC BY-SA 4.0）。各商品は代表成分1〜3種の等量混合で近似している（' +
+  D.products.map(function(p){ return esc(p.name) + ': ' + p.compounds.map(esc).join(' + '); }).join('、') + '）。<br>' +
+  '同じシミュレーションで何千匹も走らせた集計は docs/RESULTS.md の実験5に。';
+
+// ?debug exposes a way to advance the flies without animation frames, for
+// checking the page in a browser that is not painting.
+if (/[?&]debug(&|=|$)/.test(location.search)) window.errandDebug = {
+  state: state,
+  advance: function(n){ for (var i = 0; i < n; i++) state.flies.forEach(function(f){
+    f.step(state.field); if (f.done && !logged.has(f)){ logged.add(f); report(f); } }); draw(); }
+};
+
+window.addEventListener('resize', function(){ resize(); });
+resize(); renderLessons(); rebuild(); requestAnimationFrame(tick);
+})();
+</script>
+</html>

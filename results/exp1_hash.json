@@ -1,0 +1,260 @@
+{
+ "dataset": "male-cns:v1.0",
+ "hemisphere": "R",
+ "shape_full": [
+  162,
+  2045
+ ],
+ "shape_used": [
+  162,
+  1917
+ ],
+ "kc_dropped_no_alpn": 128,
+ "input_channels": 89,
+ "odour_channels": 52,
+ "edges": 11285,
+ "pn_per_kc_mean": 5.886802295252999,
+ "sparsity": 0.05,
+ "k": 50,
+ "repeats": 5,
+ "seed": 7,
+ "map": {
+  "olfactory": {
+   "real": {
+    "mean": 0.3930682786910659,
+    "std": 0.007258549913546898
+   },
+   "binary_real": {
+    "mean": 0.5195201214392855,
+    "std": 0.006836779020814899
+   },
+   "degree_swap": {
+    "mean": 0.38627770644811804,
+    "std": 0.007662471628231889
+   },
+   "kc_degree_kept": {
+    "mean": 0.6698988600033128,
+    "std": 0.004758996814683369
+   },
+   "uniform": {
+    "mean": 0.658344992407734,
+    "std": 0.0033158050431664134
+   },
+   "gaussian_lsh": {
+    "mean": 0.7123060950522735,
+    "std": 0.0025448475478951015
+   },
+   "pn_degree_kept": {
+    "mean": 0.3879578933960239,
+    "std": 0.00817842999492652
+   }
+  },
+  "glomerular": {
+   "real": {
+    "mean": 0.2933749510401687,
+    "std": 0.007221054768265217
+   },
+   "binary_real": {
+    "mean": 0.3831972678762722,
+    "std": 0.008326885094627071
+   },
+   "degree_swap": {
+    "mean": 0.289418614256557,
+    "std": 0.005576037693701469
+   },
+   "kc_degree_kept": {
+    "mean": 0.6264804622993605,
+    "std": 0.007159837127895218
+   },
+   "uniform": {
+    "mean": 0.6213806092057529,
+    "std": 0.008284601656306026
+   },
+   "gaussian_lsh": {
+    "mean": 0.6381426721137446,
+    "std": 0.007845624468142718
+   },
+   "pn_degree_kept": {
+    "mean": 0.2910888032124971,
+    "std": 0.007012888481047687
+   }
+  },
+  "pn_independent": {
+   "real": {
+    "mean": 0.25376331888238346,
+    "std": 0.005376326857250713
+   },
+   "binary_real": {
+    "mean": 0.345623943400035,
+    "std": 0.0052878364263872005
+   },
+   "degree_swap": {
+    "mean": 0.2527787203015573,
+    "std": 0.006115695095786604
+   },
+   "kc_degree_kept": {
+    "mean": 0.5435740066271475,
+    "std": 0.005685889898375309
+   },
+   "uniform": {
+    "mean": 0.5416077088968511,
+    "std": 0.0076674875398356716
+   },
+   "gaussian_lsh": {
+    "mean": 0.507618576871449,
+    "std": 0.008870013570419935
+   },
+   "pn_degree_kept": {
+    "mean": 0.2536534053333191,
+    "std": 0.005990409972088144
+   }
+  }
+ },
+ "glomerulus_outdegree": {
+  "per_glomerulus": {
+   "DC1": 473,
+   "DP1m": 446,
+   "VM5d": 389,
+   "DM1": 387,
+   "DM6": 385,
+   "DM2": 371,
+   "DA1": 322,
+   "DM4": 302,
+   "VA2": 301,
+   "DL1": 300,
+   "VC3": 288,
+   "DP1l": 278,
+   "VL2p": 271,
+   "VA3": 265,
+   "DM5": 253,
+   "DC2": 247,
+   "DC3": 244,
+   "VA4": 243,
+   "VM7d": 237,
+   "VM3": 232,
+   "DL2v": 221,
+   "VA6": 220,
+   "VC4": 217,
+   "VA7m": 209,
+   "VC5": 202,
+   "VA5": 199,
+   "D": 195,
+   "DM3": 194,
+   "VP1d+VP4": 193,
+   "VA1d": 182,
+   "V": 174,
+   "VL2a": 173,
+   "VM5v": 173,
+   "DA2": 165,
+   "VM6": 164,
+   "VM4": 160,
+   "VP1m": 155,
+   "VC2": 146,
+   "DL2d": 138,
+   "VM2": 122,
+   "VC1": 118,
+   "DL5": 117,
+   "VA1v": 115,
+   "DL3": 101,
+   "VA7l": 92,
+   "DA4l": 92,
+   "VP1d": 86,
+   "VP1m+VP5": 78,
+   "VP3+VP1l": 75,
+   "VM1": 70,
+   "VM7v": 65,
+   "DC4": 59,
+   "DL4": 56,
+   "DA4m": 45,
+   "VL1": 35,
+   "DA3": 19,
+   "VP5+Z": 19,
+   "VP3+": 17,
+   "VP1m+VP2": 14,
+   "VP4": 9,
+   "VP1m+": 8,
+   "VP2+": 5,
+   "VP1l+VP3": 3,
+   "CB0650": 2
+  },
+  "role": {
+   "VL2a": "other",
+   "DP1m": "food",
+   "DM1": "food",
+   "VA7l": "other",
+   "V": "other",
+   "VA2": "other",
+   "DP1l": "food",
+   "VL2p": "other",
+   "VL1": "other",
+   "DC1": "other",
+   "DM4": "food",
+   "VC2": "other",
+   "VC5": "other",
+   "VC1": "other",
+   "VM3": "other",
+   "VP1m+VP5": "thermo",
+   "VA4": "other",
+   "VA1d": "pheromone",
+   "DM3": "other",
+   "DL4": "other",
+   "VP1m": "thermo",
+   "DC2": "other",
+   "VP1d+VP4": "thermo",
+   "DA1": "pheromone",
+   "DC4": "food",
+   "VA5": "other",
+   "DM2": "food",
+   "DC3": "other",
+   "D": "other",
+   "VA1v": "pheromone",
+   "DL1": "other",
+   "VP1l+VP3": "thermo",
+   "VM7d": "other",
+   "VM1": "other",
+   "VM7v": "other",
+   "VC3": "other",
+   "VP3+VP1l": "thermo",
+   "DA4l": "other",
+   "VA7m": "other",
+   "DM5": "food",
+   "DM6": "other",
+   "VM5d": "other",
+   "VM2": "food",
+   "VM4": "other",
+   "VP1m+VP2": "thermo",
+   "VM5v": "other",
+   "VP1d": "thermo",
+   "VP3+": "thermo",
+   "DA2": "other",
+   "VP1m+": "thermo",
+   "DL2v": "other",
+   "DL3": "pheromone",
+   "DL2d": "other",
+   "CB0650": "other",
+   "VC4": "other",
+   "DA3": "other",
+   "VP5+Z": "thermo",
+   "VP2+": "thermo",
+   "DA4m": "other",
+   "VA3": "other",
+   "VM6": "other",
+   "VP4": "thermo",
+   "DL5": "other",
+   "VA6": "other"
+  },
+  "n": {
+   "food": 8,
+   "pheromone": 4,
+   "other": 40,
+   "thermo": 12
+  },
+  "median": {
+   "food": 290.0,
+   "pheromone": 148.5,
+   "other": 194.5,
+   "thermo": 18.0
+  },
+  "p_food_pheromone": 0.06304684765761712
+ }
+}

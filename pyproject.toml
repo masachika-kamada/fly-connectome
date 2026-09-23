@@ -1,0 +1,26 @@
+[project]
+name = "fly-connectome"
+version = "0.1.0"
+description = "Measuring the Drosophila mushroom body against random wiring, using MaleCNS v1.0 and DoOR 2.0"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+dependencies = [
+    "numpy>=2.0",
+    "requests>=2.31",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Only flymb/ is the importable package. scripts/ and experiments/ are run as
+# files, not imported, so they stay out of the wheel.
+[tool.hatch.build.targets.wheel]
+packages = ["flymb"]
